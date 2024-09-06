@@ -6,6 +6,7 @@ import com.biblioteca.repositories.interfaces.IBookRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -20,22 +21,31 @@ public class BookRepository implements IBookRepository {
 
     @Override
     public List<Book> getAllBooks() {
-        String sql=" SELECT b.id, b.bookId, b.bookName, b.author, b.bookPage, b.visibility, b.additionAt, b.publishingHouse, b.printingYear, b.language FROM BOOK b";
+        String sql=" SELECT b.id, b.bookId, b.book_name, b.author, b.book_page, b.visibility, b.addition_at, b.publishing_house, b.publishing_year, b.language, b.image FROM BOOK b";
         return jdbcTemplate.query(sql, rowMapper());
+    }
+
+    @Override
+    public Book bookRepository(int bookId) {
+        String sql= "SELECT * FROM BOOK WHERE BOOKID = :bookId";
+        MapSqlParameterSource mapParams = new MapSqlParameterSource();
+        mapParams.addValue("bookId", bookId);
+        return jdbcTemplateNamed.queryForObject(sql, mapParams, rowMapper());
     }
 
     private RowMapper<Book> rowMapper(){
         return (rs, rowNum) -> new Book(
                 rs.getInt("id"),
                 rs.getInt("bookId"),
-                rs.getString("bookName"),
+                rs.getString("book_name"),
                 rs.getString("author"),
-                rs.getInt("bookPage"),
+                rs.getInt("book_page"),
                 rs.getInt("visibility"),
-                rs.getDate("additionAt"),
-                rs.getString("publishingHouse"),
-                rs.getString("printingYear"),
-                rs.getString("language")
+                rs.getDate("addition_at"),
+                rs.getString("publishing_house"),
+                rs.getString("publishing_year"),
+                rs.getString("language"),
+                rs.getString("image")
         );
     }
 }

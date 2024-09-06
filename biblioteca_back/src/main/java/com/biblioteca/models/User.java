@@ -20,10 +20,10 @@ public class User implements Serializable {
     private String name;
     private String surname;
     private String email;
-    private String telNo;
+    private String tel_no;
     private String country;
     private String city;
-    private Date birthDay;
+    private Date birth_date;
 
 
 

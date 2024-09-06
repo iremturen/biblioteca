@@ -20,8 +20,8 @@ public class Collections implements Serializable {
     private Integer userId;
     private Integer collectionId;
     private String collectionName;
-    private Date createdAt;
-    private Date updatedAt;
+    private Date created_at;
+    private Date updated_at;
     private String visibility;
 
 }

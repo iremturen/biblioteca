@@ -1,14 +1,13 @@
 package com.biblioteca.services.interfaces;
 
-import com.biblioteca.models.Book;
+import com.biblioteca.models.Settings;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
 @Validated
-public interface IBookService {
+public interface ISettingsService {
 
-    List<Book> getAllBooks();
-
-    Book getBookByBookId(int bookId);
+    List<Settings> getFAQ();
+    List<Settings> getSupport();
 }

@@ -22,7 +22,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public User getUserByUserId(int userId) {
-        String query = "SELECT * FROM USERS WHERE USERID = :userId ";
+        String query = "SELECT * FROM USER WHERE USERID = :userId ";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("userId", userId);
         return jdbcTemplateNamed.queryForObject(query, mapParams, rowMapper());
@@ -30,9 +30,9 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public User update(int userId, User user) {
-        String sql= "UPDATE USERS SET username = :username, name = :name, surname = :surname, " +
-                "email = :email, telNo = :telNo, country = :country, city = :city, " +
-                "birthDay = :birthDay WHERE userId = :userId";
+        String sql= "UPDATE USER SET username = :username, name = :name, surname = :surname, " +
+                "email = :email, tel_no = :tel_no, country = :country, city = :city, " +
+                "birth_date = :birth_date WHERE userId = :userId";
 
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("userId",userId);
@@ -40,10 +40,10 @@ public class UserRepository implements IUserRepository {
         mapParams.addValue("name", user.getName());
         mapParams.addValue("surname", user.getSurname());
         mapParams.addValue("email", user.getEmail());
-        mapParams.addValue("telNo", user.getTelNo());
+        mapParams.addValue("tel_no", user.getTel_no());
         mapParams.addValue("country", user.getCountry());
         mapParams.addValue("city", user.getCity());
-        mapParams.addValue("birthDay", user.getBirthDay());
+        mapParams.addValue("birth_date", user.getBirth_date());
 
         jdbcTemplateNamed.update(sql,mapParams);
         return getUserByUserId(userId);
@@ -58,10 +58,10 @@ public class UserRepository implements IUserRepository {
                 rs.getString("name"),
                 rs.getString("surname"),
                 rs.getString("email"),
-                rs.getString("telNo"),
+                rs.getString("tel_no"),
                 rs.getString("country"),
                 rs.getString("city"),
-                rs.getDate("birthDay")
+                rs.getDate("birth_date")
                 );
     }
 }

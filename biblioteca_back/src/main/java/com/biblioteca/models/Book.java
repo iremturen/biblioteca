@@ -18,12 +18,14 @@ public class Book implements Serializable {
 
     private Integer id;
     private Integer bookId;
-    private String bookName;
+    private String book_name;
     private String author;
-    private Integer bookPage;
+    private Integer book_page;
     private Integer visibility;
-    private Date additionAt;
-    private String publishingHouse;
-    private String printingYear;
+    private Date addition_at;
+    private String publishing_house;
+    private String publishing_year;
     private String language;
+    private String image;
+
 }

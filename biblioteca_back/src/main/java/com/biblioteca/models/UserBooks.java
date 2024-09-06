@@ -18,8 +18,9 @@ public class UserBooks implements Serializable {
 
     private Integer id;
     private Integer userId;
-    private Integer bookd;
+    private Integer bookId;
     private Enum status;
-    private Date updatedAt;
+    private Date updated_at;
+    private Integer is_favorite;
 
 }

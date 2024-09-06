@@ -19,4 +19,9 @@ public class BookService implements IBookService {
     public List<Book> getAllBooks() {
         return bookRepository.getAllBooks();
     }
+
+    @Override
+    public Book getBookByBookId(int bookId) {
+        return bookRepository.bookRepository(bookId);
+    }
 }

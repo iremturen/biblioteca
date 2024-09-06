@@ -19,5 +19,5 @@ public class CollectionBooks implements Serializable {
     private Integer id;
     private Integer bookId;
     private Integer collectionId;
-    private Date additionAt;
+    private Date addition_at;
 }
