@@ -9,6 +9,6 @@ import java.util.List;
 public interface IBookService {
 
     List<Book> getAllBooks();
-
     Book getBookByBookId(int bookId);
+    List<Book> getNewReleases();
 }

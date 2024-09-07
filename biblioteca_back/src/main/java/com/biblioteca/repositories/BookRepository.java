@@ -26,11 +26,17 @@ public class BookRepository implements IBookRepository {
     }
 
     @Override
-    public Book bookRepository(int bookId) {
+    public Book getBookByBookId(int bookId) {
         String sql= "SELECT * FROM BOOK WHERE BOOKID = :bookId";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("bookId", bookId);
         return jdbcTemplateNamed.queryForObject(sql, mapParams, rowMapper());
+    }
+
+    @Override
+    public List<Book> getNewReleases() {
+        String sql ="SELECT * FROM BOOK b ORDER BY ID DESC LIMIT 5";
+        return jdbcTemplate.query(sql, rowMapper());
     }
 
     private RowMapper<Book> rowMapper(){

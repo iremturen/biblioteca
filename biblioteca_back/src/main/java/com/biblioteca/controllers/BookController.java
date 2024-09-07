@@ -28,4 +28,8 @@ public class BookController {
         return ResponseEntity.ok(bookService.getBookByBookId(bookId));
     }
 
+    @GetMapping("/new_releases")
+    public ResponseEntity<List<Book>> getNewReleases() {
+        return ResponseEntity.ok(bookService.getNewReleases());
+    }
 }
