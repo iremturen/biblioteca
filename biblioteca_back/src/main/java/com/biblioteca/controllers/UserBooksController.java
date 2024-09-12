@@ -17,32 +17,32 @@ public class UserBooksController {
     private IUserBooksService userBooksService;
 
     @GetMapping("/now_reading/{userId}")
-    public ResponseEntity<List<UserBooks>> getNowReading(@PathVariable int userId){
+    public ResponseEntity<List<UserBooks>> getNowReading(@PathVariable Integer userId){
         return ResponseEntity.ok(userBooksService.getNowReading(userId));
     }
 
     @GetMapping("/now_reading/count/{userId}")
-    public ResponseEntity<Integer> getCountNowReading(@PathVariable int userId){
+    public ResponseEntity<Integer> getCountNowReading(@PathVariable Integer userId){
         return ResponseEntity.ok(userBooksService.getCountNowReading(userId));
     }
 
     @GetMapping("/will_read/{userId}")
-    public ResponseEntity<List<UserBooks>> getWillRead(@PathVariable int userId){
+    public ResponseEntity<List<UserBooks>> getWillRead(@PathVariable Integer userId){
         return ResponseEntity.ok(userBooksService.getWillRead(userId));
     }
 
     @GetMapping("/will_read/count/{userId}")
-    public ResponseEntity<Integer> getCountWillRead(@PathVariable int userId){
+    public ResponseEntity<Integer> getCountWillRead(@PathVariable Integer userId){
         return ResponseEntity.ok(userBooksService.getCountWillRead(userId));
     }
 
     @GetMapping("/finished/{userId}")
-    public ResponseEntity<List<UserBooks>> getFinished(@PathVariable int userId){
+    public ResponseEntity<List<UserBooks>> getFinished(@PathVariable Integer userId){
         return ResponseEntity.ok(userBooksService.getFinished(userId));
     }
 
     @GetMapping("/finished/count/{userId}")
-    public ResponseEntity<Integer> getCountFinished(@PathVariable int userId){
+    public ResponseEntity<Integer> getCountFinished(@PathVariable Integer userId){
         return ResponseEntity.ok(userBooksService.getCountFinished(userId));
     }
 }

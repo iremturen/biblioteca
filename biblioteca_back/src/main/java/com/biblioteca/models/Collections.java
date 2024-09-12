@@ -19,9 +19,9 @@ public class Collections implements Serializable {
     private Integer id;
     private Integer userId;
     private Integer collectionId;
-    private String collectionName;
-    private Date created_at;
+    private String collection_name;
     private Date updated_at;
-    private String visibility;
-
+    private Integer visibility;
+    private String cover;
+    private String description;
 }

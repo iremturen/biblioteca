@@ -16,33 +16,33 @@ public class UserBooksService implements IUserBooksService {
 
     private IUserBooksRepository userBooksRepository;
     @Override
-    public List<UserBooks> getNowReading(int userId) {
+    public List<UserBooks> getNowReading(Integer userId) {
         return userBooksRepository.getNowReading(userId);
     }
 
     @Override
-    public Integer getCountNowReading(int userId) {
+    public Integer getCountNowReading(Integer userId) {
         return userBooksRepository.getCountNowReading(userId);
     }
 
     @Override
-    public List<UserBooks> getWillRead(int userId) {
+    public List<UserBooks> getWillRead(Integer userId) {
         return userBooksRepository.getWillRead(userId);
     }
 
     @Override
-    public Integer getCountWillRead(int userId) {
+    public Integer getCountWillRead(Integer userId) {
         return userBooksRepository.getCountWillRead(userId);
     }
 
     @Override
-    public List<UserBooks> getFinished(int userId) {
+    public List<UserBooks> getFinished(Integer userId) {
         return userBooksRepository.getFinished(userId);
 
     }
 
     @Override
-    public Integer getCountFinished(int userId) {
+    public Integer getCountFinished(Integer userId) {
         return userBooksRepository.getCountFinished(userId);
     }
 }

@@ -5,7 +5,7 @@ import com.biblioteca.models.Book;
 public interface IBookRepository {
 
     List<Book> getAllBooks();
-    Book getBookByBookId(int bookId);
+    Book getBookByBookId(Integer bookId);
     List<Book> getNewReleases();
 
 

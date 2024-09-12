@@ -15,12 +15,12 @@ public class UserService implements IUserService {
     private IUserRepository usersRepository;
 
     @Override
-    public User getUserByUserId(int userId) {
+    public User getUserByUserId(Integer userId) {
         return usersRepository.getUserByUserId(userId);
     }
 
     @Override
-    public User update(int userId, User user) {
+    public User update(Integer userId, User user) {
         return usersRepository.update(userId,user);
     }
 }

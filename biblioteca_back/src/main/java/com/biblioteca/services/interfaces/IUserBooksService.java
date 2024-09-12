@@ -9,10 +9,10 @@ import java.util.List;
 @Validated
 public interface IUserBooksService {
 
-    List<UserBooks> getNowReading(int userId);
-    Integer getCountNowReading(int userId);
-    List<UserBooks> getWillRead(int userId);
-    Integer getCountWillRead(int userId);
-    List<UserBooks> getFinished(int userId);
-    Integer getCountFinished(int userId);
+    List<UserBooks> getNowReading(Integer userId);
+    Integer getCountNowReading(Integer userId);
+    List<UserBooks> getWillRead(Integer userId);
+    Integer getCountWillRead(Integer userId);
+    List<UserBooks> getFinished(Integer userId);
+    Integer getCountFinished(Integer userId);
 }

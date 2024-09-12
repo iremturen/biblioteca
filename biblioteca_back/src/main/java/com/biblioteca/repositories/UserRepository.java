@@ -17,11 +17,10 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserRepository implements IUserRepository {
 
-    private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate jdbcTemplateNamed;
 
     @Override
-    public User getUserByUserId(int userId) {
+    public User getUserByUserId(Integer userId) {
         String query = "SELECT * FROM USER WHERE USERID = :userId ";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("userId", userId);
@@ -29,7 +28,7 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public User update(int userId, User user) {
+    public User update(Integer userId, User user) {
         String sql= "UPDATE USER SET username = :username, name = :name, surname = :surname, " +
                 "email = :email, tel_no = :tel_no, country = :country, city = :city, " +
                 "birth_date = :birth_date WHERE userId = :userId";

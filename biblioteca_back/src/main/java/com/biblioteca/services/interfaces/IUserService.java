@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public interface IUserService {
 
-    User getUserByUserId(int userId);
+    User getUserByUserId(Integer userId);
 
-    User update(int userId, User user);
+    User update(Integer userId, User user);
 }

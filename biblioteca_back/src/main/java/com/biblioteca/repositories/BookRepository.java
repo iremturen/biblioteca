@@ -26,7 +26,7 @@ public class BookRepository implements IBookRepository {
     }
 
     @Override
-    public Book getBookByBookId(int bookId) {
+    public Book getBookByBookId(Integer bookId) {
         String sql= "SELECT * FROM BOOK WHERE BOOKID = :bookId";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("bookId", bookId);

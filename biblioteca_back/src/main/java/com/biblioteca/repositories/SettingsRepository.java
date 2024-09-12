@@ -15,7 +15,6 @@ import java.util.List;
 public class SettingsRepository implements ISettingsRepository {
 
     private JdbcTemplate jdbcTemplate;
-    private NamedParameterJdbcTemplate jdbcTemplateNamed;
 
     @Override
     public List<Settings> getFAQ() {

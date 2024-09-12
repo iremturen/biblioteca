@@ -8,7 +8,7 @@ public enum FavoriteStatus {
     NOT_FAVORITE(0),
     FAVORITE(1);
 
-    private final int value;
+    private final Integer value;
 
     public int getValue() {
         return value;

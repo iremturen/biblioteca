@@ -15,10 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 public class UserBooksRepository implements IUserBooksRepository {
 
-    private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate jdbcTemplateNamed;
     @Override
-    public List<UserBooks> getNowReading(int userId) {
+    public List<UserBooks> getNowReading(Integer userId) {
         String sql = "SELECT * FROM USER_BOOKS ub JOIN BOOK b ON ub.BOOKID = b.BOOKID WHERE ub.USERID = :userId AND ub.STATUS = 'NOW_READING';";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("userId", userId);
@@ -26,7 +25,7 @@ public class UserBooksRepository implements IUserBooksRepository {
     }
 
     @Override
-    public Integer getCountNowReading(int userId) {
+    public Integer getCountNowReading(Integer userId) {
         String sql = "SELECT COUNT(*) as COUNT FROM USER_BOOKS ub JOIN BOOK b ON ub.BOOKID = b.BOOKID WHERE ub.USERID = :userId AND ub.STATUS = 'NOW_READING';";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("userId", userId);
@@ -34,7 +33,7 @@ public class UserBooksRepository implements IUserBooksRepository {
     }
 
     @Override
-    public List<UserBooks> getWillRead(int userId) {
+    public List<UserBooks> getWillRead(Integer userId) {
         String sql = "SELECT * FROM USER_BOOKS ub JOIN BOOK b ON ub.BOOKID = b.BOOKID WHERE ub.USERID = :userId AND ub.STATUS = 'WILL_READ';";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("userId", userId);
@@ -42,7 +41,7 @@ public class UserBooksRepository implements IUserBooksRepository {
     }
 
     @Override
-    public Integer getCountWillRead(int userId) {
+    public Integer getCountWillRead(Integer userId) {
         String sql = "SELECT COUNT(*) as COUNT FROM USER_BOOKS ub JOIN BOOK b ON ub.BOOKID = b.BOOKID WHERE ub.USERID = :userId AND ub.STATUS = 'WILL_READ';";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("userId", userId);
@@ -50,7 +49,7 @@ public class UserBooksRepository implements IUserBooksRepository {
     }
 
     @Override
-    public List<UserBooks> getFinished(int userId) {
+    public List<UserBooks> getFinished(Integer userId) {
         String sql = "SELECT * FROM USER_BOOKS ub JOIN BOOK b ON ub.BOOKID = b.BOOKID WHERE ub.USERID = :userId AND ub.STATUS = 'FINISHED';";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("userId", userId);
@@ -58,7 +57,7 @@ public class UserBooksRepository implements IUserBooksRepository {
     }
 
     @Override
-    public Integer getCountFinished(int userId) {
+    public Integer getCountFinished(Integer userId) {
         String sql = "SELECT COUNT(*) as COUNT FROM USER_BOOKS ub JOIN BOOK b ON ub.BOOKID = b.BOOKID WHERE ub.USERID = :userId AND ub.STATUS = 'FINISHED';";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("userId", userId);

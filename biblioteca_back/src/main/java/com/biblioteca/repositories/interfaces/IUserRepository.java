@@ -4,7 +4,7 @@ import com.biblioteca.models.User;
 
 public interface IUserRepository {
 
-    User getUserByUserId(int userId);
-    User update(int userId, User user);
+    User getUserByUserId(Integer userId);
+    User update(Integer userId, User user);
 
 }
