@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping(value="api/books")
 public class BookController {
 
-    private IBookSevice bookService;
+    private IBookService bookService;
 
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {
