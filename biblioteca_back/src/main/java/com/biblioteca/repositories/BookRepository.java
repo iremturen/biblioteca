@@ -39,6 +39,12 @@ public class BookRepository implements IBookRepository {
         return jdbcTemplate.query(sql, rowMapper());
     }
 
+    @Override
+    public List<Book> search(String pattern) {
+        String sql="SELECT * FROM BOOK WHERE BOOK_NAME LIKE '%"+pattern+"%' OR AUTHOR LIKE '%"+pattern+"%'";
+        return jdbcTemplate.query(sql, rowMapper());
+    }
+
     private RowMapper<Book> rowMapper(){
         return (rs, rowNum) -> new Book(
                 rs.getInt("id"),

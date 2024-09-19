@@ -7,6 +7,7 @@ public interface IBookRepository {
     List<Book> getAllBooks();
     Book getBookByBookId(Integer bookId);
     List<Book> getNewReleases();
+    List<Book> search(String pattern);
 
 
 }

@@ -29,4 +29,9 @@ public class BookService implements IBookService {
     public List<Book> getNewReleases() {
         return bookRepository.getNewReleases();
     }
+
+    @Override
+    public List<Book> search(String pattern) {
+        return bookRepository.search(pattern);
+    }
 }

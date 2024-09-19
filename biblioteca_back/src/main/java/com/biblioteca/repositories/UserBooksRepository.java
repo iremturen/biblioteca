@@ -71,7 +71,8 @@ public class UserBooksRepository implements IUserBooksRepository {
                 rs.getInt("bookId"),
                 BookStatus.valueOf(rs.getString("status")),
                 rs.getDate("updated_at"),
-                rs.getInt("is_favorite")
+                rs.getInt("is_favorite"),
+                rs.getInt("progress")
         );
     }
 }

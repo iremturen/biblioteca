@@ -22,5 +22,6 @@ public class UserBooks implements Serializable {
     private Enum status;
     private Date updated_at;
     private Integer is_favorite;
+    private Integer progress;
 
 }

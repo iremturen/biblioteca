@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping(value="api/books")
 public class BookController {
 
-    private IBookService bookService;
+    private IBookSevice bookService;
 
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {
@@ -32,4 +32,11 @@ public class BookController {
     public ResponseEntity<List<Book>> getNewReleases() {
         return ResponseEntity.ok(bookService.getNewReleases());
     }
+
+    @GetMapping("/search/{pattern}")
+    public ResponseEntity<List<Book>> search(@PathVariable String pattern) {
+        return ResponseEntity.ok(bookService.search(pattern));
+    }
+
+
 }
