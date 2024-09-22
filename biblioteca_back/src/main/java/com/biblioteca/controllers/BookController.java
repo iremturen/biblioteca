@@ -1,7 +1,6 @@
 package com.biblioteca.controllers;
 
 import com.biblioteca.models.Book;
-import com.biblioteca.models.User;
 import com.biblioteca.services.interfaces.IBookService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

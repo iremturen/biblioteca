@@ -10,7 +10,16 @@ public enum FavoriteStatus {
 
     private final Integer value;
 
-    public int getValue() {
+    public Integer getValue() {
         return value;
+    }
+
+    public static FavoriteStatus fromInt(int value) {
+        for (FavoriteStatus status : FavoriteStatus.values()) {
+            if (status.getValue() == value) {
+                return status;
+            }
+        }
+        throw new IllegalArgumentException("Unknown value:" + value);
     }
 }
