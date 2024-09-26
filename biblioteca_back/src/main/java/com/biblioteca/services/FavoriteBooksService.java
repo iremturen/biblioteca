@@ -1,6 +1,8 @@
 package com.biblioteca.services;
 
+import com.biblioteca.models.Book;
 import com.biblioteca.models.FavoriteBooks;
+import com.biblioteca.repositories.interfaces.IBookRepository;
 import com.biblioteca.repositories.interfaces.IFavoriteBooksRepository;
 import com.biblioteca.services.interfaces.IFavoriteBooksService;
 import lombok.AllArgsConstructor;
@@ -15,10 +17,11 @@ import java.util.List;
 public class FavoriteBooksService implements IFavoriteBooksService {
 
     private IFavoriteBooksRepository favoriteBooksRepository;
+    private IBookRepository booksRepository;
 
     @Override
-    public List<FavoriteBooks> getFavorites(Integer userId) {
-        return favoriteBooksRepository.getFavorites(userId);
+    public List<Book> getFavorites(Integer userId) {
+        return booksRepository.getFavorites(userId);
     }
 
     @Override

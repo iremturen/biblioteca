@@ -2,6 +2,7 @@ package com.biblioteca.repositories;
 
 import com.biblioteca.enums.BookStatus;
 import com.biblioteca.enums.FavoriteStatus;
+import com.biblioteca.models.Book;
 import com.biblioteca.models.FavoriteBooks;
 import com.biblioteca.models.UserBooks;
 import com.biblioteca.repositories.interfaces.IFavoriteBooksRepository;
@@ -21,14 +22,6 @@ public class FavoriteBooksRepository implements IFavoriteBooksRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<FavoriteBooks> getFavorites(Integer userId) {
-        String sql = "SELECT * FROM FAVORITE_BOOKS WHERE USERID= :userId AND STATUS= 1;";
-        MapSqlParameterSource mapParams = new MapSqlParameterSource();
-        mapParams.addValue("userId", userId);
-        return jdbcTemplateNamed.query(sql, mapParams, rowMapper());
-    }
-
-    @Override
     public void remove(Integer userId, Integer bookId) {
     String sql = "UPDATE FAVORITE_BOOKS SET status = 0 WHERE userId = :userId and bookId = :bookId;";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
@@ -46,15 +39,5 @@ public class FavoriteBooksRepository implements IFavoriteBooksRepository {
         mapParams.addValue("userId",userId);
         mapParams.addValue("bookId",bookId);
         jdbcTemplateNamed.update(sql, mapParams);
-    }
-
-    private RowMapper<FavoriteBooks> rowMapper(){
-        return (rs, rowNum) -> new FavoriteBooks(
-                rs.getInt("id"),
-                rs.getInt("bookId"),
-                rs.getInt("userId"),
-                FavoriteStatus.fromInt(rs.getInt("status")),
-                rs.getDate("addition_at")
-        );
     }
 }

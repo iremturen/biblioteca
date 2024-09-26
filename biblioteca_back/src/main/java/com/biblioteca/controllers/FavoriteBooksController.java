@@ -1,5 +1,6 @@
 package com.biblioteca.controllers;
 
+import com.biblioteca.models.Book;
 import com.biblioteca.models.FavoriteBooks;
 import com.biblioteca.models.User;
 import com.biblioteca.models.UserBooks;
@@ -19,7 +20,7 @@ public class FavoriteBooksController {
     private IFavoriteBooksService favoriteBooksService;
 
     @GetMapping("/books/{userId}")
-    public ResponseEntity<List<FavoriteBooks>> getFavorites(@PathVariable Integer userId){
+    public ResponseEntity<List<Book>> getFavorites(@PathVariable Integer userId){
         return ResponseEntity.ok(favoriteBooksService.getFavorites(userId));
     }
 

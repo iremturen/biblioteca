@@ -8,6 +8,6 @@ public interface IBookRepository {
     Book getBookByBookId(Integer bookId);
     List<Book> getNewReleases();
     List<Book> search(String pattern);
-
+    List<Book> getFavorites(Integer userId);
 
 }

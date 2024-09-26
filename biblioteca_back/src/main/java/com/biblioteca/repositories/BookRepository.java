@@ -45,6 +45,14 @@ public class BookRepository implements IBookRepository {
         return jdbcTemplate.query(sql, rowMapper());
     }
 
+    @Override
+    public List<Book> getFavorites(Integer userId) {
+        String sql = "SELECT fb.*, b.* FROM sys.FAVORITE_BOOKS fb JOIN sys.BOOK b ON fb.bookId = b.bookId WHERE USERID= :userId AND STATUS= 1;";
+        MapSqlParameterSource mapParams = new MapSqlParameterSource();
+        mapParams.addValue("userId", userId);
+        return jdbcTemplateNamed.query(sql, mapParams, rowMapper());
+    }
+
     private RowMapper<Book> rowMapper(){
         return (rs, rowNum) -> new Book(
                 rs.getInt("id"),
