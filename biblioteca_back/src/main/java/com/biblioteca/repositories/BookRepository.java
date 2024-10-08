@@ -53,6 +53,14 @@ public class BookRepository implements IBookRepository {
         return jdbcTemplateNamed.query(sql, mapParams, rowMapper());
     }
 
+    @Override
+    public List<Book> getCollectionsBooks(Integer collectionId) {
+        String sql ="SELECT b.* FROM sys.COLLECTION_BOOKS cb JOIN sys.BOOK b ON cb.BOOKID = b.BOOKID WHERE cb.COLLECTIONID = :collectionId;";
+        MapSqlParameterSource mapParams = new MapSqlParameterSource();
+        mapParams.addValue("collectionId", collectionId);
+        return jdbcTemplateNamed.query(sql, mapParams, rowMapper());
+    }
+
     private RowMapper<Book> rowMapper(){
         return (rs, rowNum) -> new Book(
                 rs.getInt("id"),

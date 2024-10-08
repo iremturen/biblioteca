@@ -1,11 +1,14 @@
 package com.biblioteca.repositories;
 
 
+import com.biblioteca.models.Book;
 import com.biblioteca.repositories.interfaces.ICollectionBooksRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @AllArgsConstructor
 @Repository
@@ -20,6 +23,7 @@ public class CollectionBooksRepository implements ICollectionBooksRepository {
         return jdbcTemplateNamed.queryForObject(sql, mapParams, Integer.class);
 
     }
+
 
 
 }

@@ -9,5 +9,6 @@ public interface IBookRepository {
     List<Book> getNewReleases();
     List<Book> search(String pattern);
     List<Book> getFavorites(Integer userId);
+    List<Book> getCollectionsBooks(Integer collectionId);
 
 }

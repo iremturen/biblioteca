@@ -1,10 +1,14 @@
 package com.biblioteca.services;
 
+import com.biblioteca.models.Book;
+import com.biblioteca.repositories.interfaces.IBookRepository;
 import com.biblioteca.repositories.interfaces.ICollectionBooksRepository;
 import com.biblioteca.services.interfaces.ICollectionBooksService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -12,9 +16,15 @@ import org.springframework.validation.annotation.Validated;
 public class CollectionBooksService implements ICollectionBooksService {
 
     private ICollectionBooksRepository collectionBooksRepository;
+    private IBookRepository bookRepository;
 
     @Override
     public Integer getBookCount(Integer collectionId) {
         return collectionBooksRepository.getBookCount(collectionId);
+    }
+
+    @Override
+    public List<Book> getCollectionsBooks(Integer collectionId) {
+        return bookRepository.getCollectionsBooks(collectionId);
     }
 }
