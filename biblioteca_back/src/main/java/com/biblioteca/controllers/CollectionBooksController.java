@@ -27,4 +27,15 @@ public class CollectionBooksController {
     public ResponseEntity<List<Book>> getCollectionsBooks(@PathVariable Integer collectionId) {
         return ResponseEntity.ok(collectionBooksService.getCollectionsBooks(collectionId));
     }
+
+    @GetMapping("/search/{collectionId}")
+    public ResponseEntity<List<Book>> search(@PathVariable  Integer collectionId, @RequestParam String pattern) {
+        return ResponseEntity.ok(collectionBooksService.search(collectionId, pattern));
+    }
+
+    @GetMapping("/sortBy/{collectionId}")
+    public ResponseEntity<List<Book>> sortBy(@PathVariable  Integer collectionId, @RequestParam String sortBy, @RequestParam String order ) {
+        return ResponseEntity.ok(collectionBooksService.sortBy(collectionId, sortBy, order));
+    }
+
 }

@@ -61,6 +61,29 @@ public class BookRepository implements IBookRepository {
         return jdbcTemplateNamed.query(sql, mapParams, rowMapper());
     }
 
+    @Override
+    public List<Book> searchInCollection(Integer collectionId, String pattern) {
+        String sql = "SELECT b.* FROM sys.COLLECTION_BOOKS cb " +
+                "JOIN sys.BOOK b ON cb.BOOKID = b.BOOKID " +
+                "WHERE cb.COLLECTIONID = " + collectionId +
+                " AND (b.BOOK_NAME LIKE '%" + pattern + "%' " +
+                "OR b.AUTHOR LIKE '%" + pattern + "%' " +
+                "OR b.BOOK_PAGE LIKE '%" + pattern + "%' " +
+                "OR b.PUBLISHING_HOUSE LIKE '%" + pattern + "%')";
+         return jdbcTemplate.query(sql, rowMapper());
+    }
+
+    @Override
+    public List<Book> sortBy(Integer collectionId, String sortBy, String order) {
+        String sql="SELECT b.* " +
+                "FROM sys.COLLECTION_BOOKS cb " +
+                "JOIN sys.BOOK b ON cb.BOOKID = b.BOOKID " +
+                "WHERE cb.COLLECTIONID =" + collectionId +
+                " ORDER BY b."+ sortBy + " " + order;
+        return jdbcTemplate.query(sql, rowMapper());
+    }
+
+
     private RowMapper<Book> rowMapper(){
         return (rs, rowNum) -> new Book(
                 rs.getInt("id"),
