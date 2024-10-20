@@ -15,4 +15,5 @@ public interface IUserBooksService {
     Integer getCountWillRead(Integer userId);
     List<UserBooks> getFinished(Integer userId);
     Integer getCountFinished(Integer userId);
+    Integer updateProgress(Integer userId, Integer bookId, Integer pageNum);
 }

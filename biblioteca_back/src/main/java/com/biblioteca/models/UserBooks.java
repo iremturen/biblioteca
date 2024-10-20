@@ -23,5 +23,8 @@ public class UserBooks implements Serializable {
     private Date updated_at;
     private Integer is_favorite;
     private Integer progress;
+    private Book book;
+
+
 
 }

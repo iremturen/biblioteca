@@ -1,6 +1,7 @@
 package com.biblioteca.repositories;
 
 import com.biblioteca.enums.BookStatus;
+import com.biblioteca.models.Book;
 import com.biblioteca.models.UserBooks;
 import com.biblioteca.repositories.interfaces.IUserBooksRepository;
 import lombok.AllArgsConstructor;
@@ -64,15 +65,42 @@ public class UserBooksRepository implements IUserBooksRepository {
         return jdbcTemplateNamed.queryForObject(sql, mapParams, Integer.class);
     }
 
-    private RowMapper<UserBooks> rowMapper(){
-        return (rs, rowNum) -> new UserBooks(
-                rs.getInt("id"),
-                rs.getInt("userId"),
-                rs.getInt("bookId"),
-                BookStatus.valueOf(rs.getString("status")),
-                rs.getDate("updated_at"),
-                rs.getInt("is_favorite"),
-                rs.getInt("progress")
-        );
+    @Override
+    public Integer updateProgress(Integer userId, Integer bookId, Integer pageNum) {
+        String sql="UPDATE USER_BOOKS SET PROGRESS = :pageNum WHERE USERID = :userId AND BOOKID= :bookId;";
+        MapSqlParameterSource mapParams = new MapSqlParameterSource();
+        mapParams.addValue("userId", userId);
+        mapParams.addValue("bookId", bookId);
+        mapParams.addValue("pageNum", pageNum);
+        return jdbcTemplateNamed.update(sql, mapParams);
+    }
+
+    private RowMapper<UserBooks> rowMapper() {
+        return (rs, rowNum) -> {
+            Book book = new Book(
+                    rs.getInt("id"),
+                    rs.getInt("bookId"),
+                    rs.getString("book_name"),
+                    rs.getString("author"),
+                    rs.getInt("book_page"),
+                    rs.getInt("visibility"),
+                    rs.getDate("addition_at"),
+                    rs.getString("publishing_house"),
+                    rs.getString("publishing_year"),
+                    rs.getString("language"),
+                    rs.getString("image")
+            );
+
+            return new UserBooks(
+                    rs.getInt("id"),
+                    rs.getInt("userId"),
+                    rs.getInt("bookId"),
+                    BookStatus.valueOf(rs.getString("status")),
+                    rs.getDate("updated_at"),
+                    rs.getInt("is_favorite"),
+                    rs.getInt("progress"),
+                    book
+            );
+        };
     }
 }

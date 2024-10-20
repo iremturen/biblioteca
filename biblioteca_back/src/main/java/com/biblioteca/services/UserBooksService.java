@@ -45,4 +45,9 @@ public class UserBooksService implements IUserBooksService {
     public Integer getCountFinished(Integer userId) {
         return userBooksRepository.getCountFinished(userId);
     }
+
+    @Override
+    public Integer updateProgress(Integer userId, Integer bookId, Integer pageNum) {
+        return userBooksRepository.updateProgress(userId,bookId, pageNum);
+    }
 }

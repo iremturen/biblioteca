@@ -45,4 +45,10 @@ public class UserBooksController {
     public ResponseEntity<Integer> getCountFinished(@PathVariable Integer userId){
         return ResponseEntity.ok(userBooksService.getCountFinished(userId));
     }
+
+    @PutMapping("/update/{bookId}")
+    public ResponseEntity<Integer> updateProgress(@PathVariable Integer bookId, @RequestParam Integer userId, @RequestParam Integer pageNum ){
+        return ResponseEntity.ok(userBooksService.updateProgress(userId, bookId, pageNum));
+    }
+
 }
