@@ -13,4 +13,6 @@ public interface IUserBooksRepository {
     List<UserBooks> getFinished(Integer userId);
     Integer getCountFinished(Integer userId);
     Integer updateProgress(Integer userId, Integer bookId, Integer pageNum);
+    List<UserBooks> search(Integer userId,Integer type, String pattern);
+
 }

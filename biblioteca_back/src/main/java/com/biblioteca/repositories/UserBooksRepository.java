@@ -75,6 +75,35 @@ public class UserBooksRepository implements IUserBooksRepository {
         return jdbcTemplateNamed.update(sql, mapParams);
     }
 
+    @Override
+    public List<UserBooks> search(Integer userId, Integer type, String pattern) {
+        String statusValue = getStatusValue(type);
+
+        String sql = "SELECT * FROM USER_BOOKS ub" +
+                " JOIN BOOK b ON ub.BOOKID = b.BOOKID" +
+                " WHERE ub.USERID = :userId" +
+                " AND ub.STATUS = :statusValue" +
+                " AND (b.BOOK_NAME LIKE :pattern OR b.AUTHOR LIKE :pattern)";
+        MapSqlParameterSource mapParams = new MapSqlParameterSource();
+        mapParams.addValue("userId", userId);
+        mapParams.addValue("statusValue", statusValue);
+        mapParams.addValue("pattern", "%" + pattern + "%");
+        return jdbcTemplateNamed.query(sql, mapParams, rowMapper());
+    }
+
+    private String getStatusValue(Integer type) {
+        switch (type) {
+            case 1:
+                return "NOW_READING";
+            case 2:
+                return "WILL_READ";
+            case 3:
+                return "FINISHED";
+            default:
+                return "";
+        }
+    }
+
     private RowMapper<UserBooks> rowMapper() {
         return (rs, rowNum) -> {
             Book book = new Book(

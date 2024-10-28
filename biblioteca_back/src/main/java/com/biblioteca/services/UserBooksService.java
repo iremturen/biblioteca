@@ -50,4 +50,9 @@ public class UserBooksService implements IUserBooksService {
     public Integer updateProgress(Integer userId, Integer bookId, Integer pageNum) {
         return userBooksRepository.updateProgress(userId,bookId, pageNum);
     }
+
+    @Override
+    public List<UserBooks> search(Integer userId, Integer type, String pattern) {
+        return userBooksRepository.search(userId,type,pattern);
+    }
 }

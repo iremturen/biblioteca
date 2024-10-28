@@ -51,4 +51,9 @@ public class UserBooksController {
         return ResponseEntity.ok(userBooksService.updateProgress(userId, bookId, pageNum));
     }
 
+    @GetMapping("/search/{userId}")
+    public ResponseEntity<List<UserBooks>> search(@PathVariable Integer userId, @RequestParam Integer type, @RequestParam String pattern){
+        return ResponseEntity.ok(userBooksService.search(userId,type,pattern));
+    }
+
 }
