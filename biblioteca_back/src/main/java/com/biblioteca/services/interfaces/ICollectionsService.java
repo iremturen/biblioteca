@@ -10,4 +10,7 @@ public interface ICollectionsService {
 
     List<Collections> getCollecitonsByUserId(Integer userId);
     Collections getCollecitonById(Integer collectionId);
+    Collections update(Integer collectionId, Collections collections);
+    Collections create(Collections collections);
+
 }

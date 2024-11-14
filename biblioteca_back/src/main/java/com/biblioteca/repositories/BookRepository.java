@@ -21,7 +21,7 @@ public class BookRepository implements IBookRepository {
 
     @Override
     public List<Book> getAllBooks() {
-        String sql=" SELECT b.id, b.bookId, b.book_name, b.author, b.book_page, b.visibility, b.addition_at, b.publishing_house, b.publishing_year, b.language, b.image FROM BOOK b";
+        String sql=" SELECT b.id, b.bookId, b.book_name, b.author, b.book_page, b.visibility, b.addition_at, b.publishing_house, b.publishing_year, b.language, b.image, b.description FROM BOOK b";
         return jdbcTemplate.query(sql, rowMapper());
     }
 
@@ -96,7 +96,8 @@ public class BookRepository implements IBookRepository {
                 rs.getString("publishing_house"),
                 rs.getString("publishing_year"),
                 rs.getString("language"),
-                rs.getString("image")
+                rs.getString("image"),
+                rs.getString("description")
         );
     }
 }

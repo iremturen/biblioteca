@@ -117,7 +117,8 @@ public class UserBooksRepository implements IUserBooksRepository {
                     rs.getString("publishing_house"),
                     rs.getString("publishing_year"),
                     rs.getString("language"),
-                    rs.getString("image")
+                    rs.getString("image"),
+                    rs.getString("description")
             );
 
             return new UserBooks(

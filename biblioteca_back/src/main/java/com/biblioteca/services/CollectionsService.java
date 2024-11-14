@@ -24,4 +24,14 @@ public class CollectionsService implements ICollectionsService {
     public Collections getCollecitonById(Integer collectionId) {
         return collectionRepository.getCollecitonById(collectionId);
     }
+
+    @Override
+    public Collections update(Integer collectionId, Collections collections) {
+        return collectionRepository.update(collectionId,collections);
+    }
+
+    @Override
+    public Collections create(Collections collections) {
+        return  collectionRepository.create(collections);
+    }
 }

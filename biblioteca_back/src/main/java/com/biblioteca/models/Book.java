@@ -27,5 +27,5 @@ public class Book implements Serializable {
     private String publishing_year;
     private String language;
     private String image;
-
+    private String description;
 }
