@@ -32,6 +32,11 @@ public class CollectionsService implements ICollectionsService {
 
     @Override
     public Collections create(Collections collections) {
-        return  collectionRepository.create(collections);
+        return collectionRepository.create(collections);
+    }
+
+    @Override
+    public void delete(Integer collectionId) {
+        collectionRepository.delete(collectionId);
     }
 }

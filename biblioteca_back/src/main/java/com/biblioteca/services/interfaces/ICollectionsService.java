@@ -12,5 +12,5 @@ public interface ICollectionsService {
     Collections getCollecitonById(Integer collectionId);
     Collections update(Integer collectionId, Collections collections);
     Collections create(Collections collections);
-
+    void delete(Integer collectionId);
 }

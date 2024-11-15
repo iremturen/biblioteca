@@ -40,5 +40,11 @@ public class CollectionsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCollection);
     }
 
+    @DeleteMapping("/{collectionId}")
+    public ResponseEntity<Collections> delete(@PathVariable Integer collectionId) {
+            collectionsService.delete(collectionId);
+            return ResponseEntity.ok().build();
+    }
+
 
 }

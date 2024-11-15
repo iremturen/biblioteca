@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 @AllArgsConstructor
@@ -19,7 +20,7 @@ public class CollectionsRepository implements ICollectionRepository {
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
-   // private Random random = new Random();
+
 
     @Override
     public List<Collections> getCollecitonsByUserId(Integer userId) {
@@ -69,11 +70,22 @@ public class CollectionsRepository implements ICollectionRepository {
         return collections;
     }
 
+    @Override
+    public void delete(Integer collectionId) {
+        String sql  ="DELETE collections, collection_books"
+                + " FROM collections"
+                + " LEFT JOIN collection_books ON collections.collectionId = collection_books.collectionId"
+                + " WHERE collections.collectionId = :collectionId;";
+
+        MapSqlParameterSource mapParams = new MapSqlParameterSource();
+        mapParams.addValue("collectionId", collectionId);
+        namedParameterJdbcTemplate.update(sql, mapParams);
+    }
+
     private Integer generateUniqueCollectionId() {
         Integer collectionId;
         do {
-            collectionId = 1000;
-            //collectionId = 1000 + random.nextInt(9000);
+            collectionId = ThreadLocalRandom.current().nextInt(1000, 10000);
         } while (isExistCollectionId(collectionId));
         return collectionId;
     }
