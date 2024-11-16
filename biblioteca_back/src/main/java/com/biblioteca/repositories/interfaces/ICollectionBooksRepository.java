@@ -8,6 +8,7 @@ import java.util.List;
 public interface ICollectionBooksRepository {
     Integer getBookCount(Integer collectionId);
     void addBooksToCollection(Integer collectionId, List<Long> addedBooks);
+    void removeBook(CollectionBooks collectionsBooks);
 
 
 }

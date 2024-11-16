@@ -9,7 +9,7 @@ public interface IBookRepository {
     List<Book> getNewReleases();
     List<Book> search(String pattern);
     List<Book> getFavorites(Integer userId);
-    List<Book> getCollectionsBooks(Integer collectionId);
+    List<Book> getCollectionsBooks(Integer collectionId, String sortBy);
     List<Book> searchInCollection(Integer collectionId, String pattern);
     List<Book> sortBy(Integer collectionId, String sortBy, String order);
 }

@@ -54,8 +54,19 @@ public class BookRepository implements IBookRepository {
     }
 
     @Override
-    public List<Book> getCollectionsBooks(Integer collectionId) {
-        String sql ="SELECT b.* FROM sys.COLLECTION_BOOKS cb JOIN sys.BOOK b ON cb.BOOKID = b.BOOKID WHERE cb.COLLECTIONID = :collectionId;";
+    public List<Book> getCollectionsBooks(Integer collectionId, String sortBy) {
+        String query ="SELECT b.* FROM sys.COLLECTION_BOOKS cb JOIN sys.BOOK b ON cb.BOOKID = b.BOOKID WHERE cb.COLLECTIONID = :collectionId";
+
+        String orderByClause = switch (sortBy) {
+            case "title" -> " ORDER BY b.BOOK_NAME";
+            case "author" -> " ORDER BY b.AUTHOR";
+            case "house" -> " ORDER BY b.PUBLISHING_HOUSE";
+            case "page" -> " ORDER BY b.BOOK_PAGE";
+            case "date" -> " ORDER BY cb.ADDITION_AT";
+            default -> "";
+        };
+        String sql = query + orderByClause;
+
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("collectionId", collectionId);
         return jdbcTemplateNamed.query(sql, mapParams, rowMapper());

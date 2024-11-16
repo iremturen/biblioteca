@@ -25,8 +25,8 @@ public class CollectionBooksService implements ICollectionBooksService {
     }
 
     @Override
-    public List<Book> getCollectionsBooks(Integer collectionId) {
-        return bookRepository.getCollectionsBooks(collectionId);
+    public List<Book> getCollectionsBooks(Integer collectionId, String sortBy) {
+        return bookRepository.getCollectionsBooks(collectionId, sortBy);
     }
 
     @Override
@@ -42,5 +42,10 @@ public class CollectionBooksService implements ICollectionBooksService {
     @Override
     public void addBooksToCollection(Integer collectionId, List<Long> addedBooks) {
         collectionBooksRepository.addBooksToCollection(collectionId, addedBooks);
+    }
+
+    @Override
+    public void removeBook(CollectionBooks collectionsBooks) {
+        collectionBooksRepository.removeBook(collectionsBooks);
     }
 }

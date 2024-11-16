@@ -42,4 +42,14 @@ public class CollectionBooksRepository implements ICollectionBooksRepository {
         }
     }
 
+    @Override
+    public void removeBook(CollectionBooks collectionsBooks) {
+        String sql="DELETE FROM COLLECTION_BOOKS WHERE COLLECTIONID=:collectionId AND BOOKID=:bookId;";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("collectionId", collectionsBooks.getCollectionId());
+        params.addValue("bookId", collectionsBooks.getBookId());
+
+        jdbcTemplateNamed.update(sql, params);
+    }
+
 }

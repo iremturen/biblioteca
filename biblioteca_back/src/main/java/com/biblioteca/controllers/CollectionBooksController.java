@@ -26,8 +26,8 @@ public class CollectionBooksController {
     }
 
     @GetMapping("/{collectionId}")
-    public ResponseEntity<List<Book>> getCollectionsBooks(@PathVariable Integer collectionId) {
-        return ResponseEntity.ok(collectionBooksService.getCollectionsBooks(collectionId));
+    public ResponseEntity<List<Book>> getCollectionsBooks(@PathVariable Integer collectionId, @RequestParam(required = false, defaultValue = "date") String sortBy) {
+        return ResponseEntity.ok(collectionBooksService.getCollectionsBooks(collectionId, sortBy));
     }
 
     @GetMapping("/search/{collectionId}")
@@ -45,4 +45,11 @@ public class CollectionBooksController {
         collectionBooksService.addBooksToCollection(collectionId, addedBooks);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @DeleteMapping("/remove")
+    public ResponseEntity<CollectionBooks> removeBook(@RequestBody CollectionBooks collectionBooks) {
+        collectionBooksService.removeBook(collectionBooks);
+        return ResponseEntity.ok().build();
+    }
+
 }
