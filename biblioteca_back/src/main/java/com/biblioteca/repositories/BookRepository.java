@@ -35,7 +35,7 @@ public class BookRepository implements IBookRepository {
 
     @Override
     public List<Book> getNewReleases() {
-        String sql ="SELECT * FROM BOOK b ORDER BY ID DESC LIMIT 5";
+        String sql ="SELECT * FROM BOOK b ORDER BY ID DESC LIMIT 10";
         return jdbcTemplate.query(sql, rowMapper());
     }
 

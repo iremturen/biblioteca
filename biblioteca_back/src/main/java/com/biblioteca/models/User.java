@@ -24,6 +24,7 @@ public class User implements Serializable {
     private String country;
     private String city;
     private Date birth_date;
+    private String profile_image;
 
 
 

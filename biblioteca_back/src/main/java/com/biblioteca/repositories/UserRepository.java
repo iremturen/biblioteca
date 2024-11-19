@@ -30,7 +30,7 @@ public class UserRepository implements IUserRepository {
     @Override
     public User update(Integer userId, User user) {
         String sql= "UPDATE USER SET username = :username, name = :name, surname = :surname, " +
-                "email = :email, tel_no = :tel_no, country = :country, city = :city, " +
+                "email = :email, tel_no = :tel_no, country = :country, city = :city, profile_image = :profile_image, " +
                 "birth_date = :birth_date WHERE userId = :userId";
 
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
@@ -43,6 +43,8 @@ public class UserRepository implements IUserRepository {
         mapParams.addValue("country", user.getCountry());
         mapParams.addValue("city", user.getCity());
         mapParams.addValue("birth_date", user.getBirth_date());
+        mapParams.addValue("profile_image", user.getProfile_image());
+
 
         jdbcTemplateNamed.update(sql,mapParams);
         return getUserByUserId(userId);
@@ -60,7 +62,8 @@ public class UserRepository implements IUserRepository {
                 rs.getString("tel_no"),
                 rs.getString("country"),
                 rs.getString("city"),
-                rs.getDate("birth_date")
+                rs.getDate("birth_date"),
+                rs.getString("profile_image")
                 );
     }
 }
