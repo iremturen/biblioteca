@@ -34,4 +34,9 @@ public class FavoriteBooksService implements IFavoriteBooksService {
         favoriteBooksRepository.addBook(userId, bookId);
     }
 
+    @Override
+    public boolean isFavorite(Integer bookId, Integer userId) {
+        return favoriteBooksRepository.isFavorite(bookId,userId);
+    }
+
 }

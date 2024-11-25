@@ -18,23 +18,39 @@ public class BookController {
 
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {
-        List<Book> books = bookService.getAllBooks();
-        return ResponseEntity.ok(books);
+        try {
+            List<Book> books = bookService.getAllBooks();
+            return ResponseEntity.ok(books);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/{bookId}")
     public ResponseEntity<Book> getBookByBookId(@PathVariable Integer bookId) {
-        return ResponseEntity.ok(bookService.getBookByBookId(bookId));
+        try {
+            return ResponseEntity.ok(bookService.getBookByBookId(bookId));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/new_releases")
     public ResponseEntity<List<Book>> getNewReleases() {
-        return ResponseEntity.ok(bookService.getNewReleases());
+        try {
+            return ResponseEntity.ok(bookService.getNewReleases());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/search/{pattern}")
     public ResponseEntity<List<Book>> search(@PathVariable String pattern) {
-        return ResponseEntity.ok(bookService.search(pattern));
+        try {
+            return ResponseEntity.ok(bookService.search(pattern));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

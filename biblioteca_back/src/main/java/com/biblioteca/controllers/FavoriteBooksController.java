@@ -36,4 +36,9 @@ public class FavoriteBooksController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/{bookId}")
+    public ResponseEntity<Boolean> isFavorite(@PathVariable Integer bookId, @RequestParam Integer userId){
+        return ResponseEntity.ok(favoriteBooksService.isFavorite(bookId, userId));
+    }
+
 }
