@@ -9,12 +9,8 @@ import java.util.List;
 @Validated
 public interface IUserBooksService {
 
-    List<UserBooks> getNowReading(Integer userId);
-    Integer getCountNowReading(Integer userId);
-    List<UserBooks> getWillRead(Integer userId);
-    Integer getCountWillRead(Integer userId);
-    List<UserBooks> getFinished(Integer userId);
-    Integer getCountFinished(Integer userId);
+    List<UserBooks> getBooksByStatus(Integer userId, String status);
+    Integer getCountByStatus(Integer userId, String status);
     Integer updateProgress(Integer userId, Integer bookId, Integer pageNum);
 
     List<UserBooks> search(Integer userId,Integer type,String pattern);

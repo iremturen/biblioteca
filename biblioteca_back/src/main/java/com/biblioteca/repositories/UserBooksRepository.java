@@ -18,50 +18,21 @@ public class UserBooksRepository implements IUserBooksRepository {
 
     private NamedParameterJdbcTemplate jdbcTemplateNamed;
     @Override
-    public List<UserBooks> getNowReading(Integer userId) {
-        String sql = "SELECT * FROM USER_BOOKS ub JOIN BOOK b ON ub.BOOKID = b.BOOKID WHERE ub.USERID = :userId AND ub.STATUS = 'NOW_READING';";
+    public List<UserBooks> getBooksByStatus(Integer userId, String status) {
+        String sql = "SELECT * FROM USER_BOOKS ub JOIN BOOK b ON ub.BOOKID = b.BOOKID " +
+                "WHERE ub.USERID = :userId AND ub.STATUS = :status";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("userId", userId);
+        mapParams.addValue("status", status);
         return jdbcTemplateNamed.query(sql, mapParams, rowMapper());
     }
-
     @Override
-    public Integer getCountNowReading(Integer userId) {
-        String sql = "SELECT COUNT(*) as COUNT FROM USER_BOOKS ub JOIN BOOK b ON ub.BOOKID = b.BOOKID WHERE ub.USERID = :userId AND ub.STATUS = 'NOW_READING';";
+    public Integer getCountByStatus(Integer userId, String status) {
+        String sql = "SELECT COUNT(*) as COUNT FROM USER_BOOKS ub JOIN BOOK b ON ub.BOOKID = b.BOOKID " +
+                "WHERE ub.USERID = :userId AND ub.STATUS = :status";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("userId", userId);
-        return jdbcTemplateNamed.queryForObject(sql, mapParams, Integer.class);
-    }
-
-    @Override
-    public List<UserBooks> getWillRead(Integer userId) {
-        String sql = "SELECT * FROM USER_BOOKS ub JOIN BOOK b ON ub.BOOKID = b.BOOKID WHERE ub.USERID = :userId AND ub.STATUS = 'WILL_READ';";
-        MapSqlParameterSource mapParams = new MapSqlParameterSource();
-        mapParams.addValue("userId", userId);
-        return jdbcTemplateNamed.query(sql, mapParams, rowMapper());
-    }
-
-    @Override
-    public Integer getCountWillRead(Integer userId) {
-        String sql = "SELECT COUNT(*) as COUNT FROM USER_BOOKS ub JOIN BOOK b ON ub.BOOKID = b.BOOKID WHERE ub.USERID = :userId AND ub.STATUS = 'WILL_READ';";
-        MapSqlParameterSource mapParams = new MapSqlParameterSource();
-        mapParams.addValue("userId", userId);
-        return jdbcTemplateNamed.queryForObject(sql, mapParams, Integer.class);
-    }
-
-    @Override
-    public List<UserBooks> getFinished(Integer userId) {
-        String sql = "SELECT * FROM USER_BOOKS ub JOIN BOOK b ON ub.BOOKID = b.BOOKID WHERE ub.USERID = :userId AND ub.STATUS = 'FINISHED';";
-        MapSqlParameterSource mapParams = new MapSqlParameterSource();
-        mapParams.addValue("userId", userId);
-        return jdbcTemplateNamed.query(sql, mapParams, rowMapper());
-    }
-
-    @Override
-    public Integer getCountFinished(Integer userId) {
-        String sql = "SELECT COUNT(*) as COUNT FROM USER_BOOKS ub JOIN BOOK b ON ub.BOOKID = b.BOOKID WHERE ub.USERID = :userId AND ub.STATUS = 'FINISHED';";
-        MapSqlParameterSource mapParams = new MapSqlParameterSource();
-        mapParams.addValue("userId", userId);
+        mapParams.addValue("status", status);
         return jdbcTemplateNamed.queryForObject(sql, mapParams, Integer.class);
     }
 

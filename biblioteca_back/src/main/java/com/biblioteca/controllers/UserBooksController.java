@@ -16,34 +16,14 @@ public class UserBooksController {
 
     private IUserBooksService userBooksService;
 
-    @GetMapping("/now_reading/{userId}")
-    public ResponseEntity<List<UserBooks>> getNowReading(@PathVariable Integer userId){
-        return ResponseEntity.ok(userBooksService.getNowReading(userId));
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<UserBooks>> getUserBooks(@PathVariable Integer userId, @RequestParam String status){
+        return ResponseEntity.ok(userBooksService.getBooksByStatus(userId, status));
     }
 
-    @GetMapping("/now_reading/count/{userId}")
-    public ResponseEntity<Integer> getCountNowReading(@PathVariable Integer userId){
-        return ResponseEntity.ok(userBooksService.getCountNowReading(userId));
-    }
-
-    @GetMapping("/will_read/{userId}")
-    public ResponseEntity<List<UserBooks>> getWillRead(@PathVariable Integer userId){
-        return ResponseEntity.ok(userBooksService.getWillRead(userId));
-    }
-
-    @GetMapping("/will_read/count/{userId}")
-    public ResponseEntity<Integer> getCountWillRead(@PathVariable Integer userId){
-        return ResponseEntity.ok(userBooksService.getCountWillRead(userId));
-    }
-
-    @GetMapping("/finished/{userId}")
-    public ResponseEntity<List<UserBooks>> getFinished(@PathVariable Integer userId){
-        return ResponseEntity.ok(userBooksService.getFinished(userId));
-    }
-
-    @GetMapping("/finished/count/{userId}")
-    public ResponseEntity<Integer> getCountFinished(@PathVariable Integer userId){
-        return ResponseEntity.ok(userBooksService.getCountFinished(userId));
+    @GetMapping("/count/{userId}")
+    public ResponseEntity<Integer> getCountUserBooks(@PathVariable Integer userId, @RequestParam String status){
+        return ResponseEntity.ok(userBooksService.getCountByStatus(userId, status));
     }
 
     @PutMapping("/update/{bookId}")
