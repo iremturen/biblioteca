@@ -62,6 +62,11 @@ public class UserBooksRepository implements IUserBooksRepository {
         return jdbcTemplateNamed.query(sql, mapParams, rowMapper());
     }
 
+    @Override
+    public UserBooks removeBook(Integer bookId, Integer userId, String type) {
+        return null;
+    }
+
     private String getStatusValue(Integer type) {
         switch (type) {
             case 1:

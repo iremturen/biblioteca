@@ -36,4 +36,9 @@ public class UserBooksService implements IUserBooksService {
     public List<UserBooks> search(Integer userId, Integer type, String pattern) {
         return userBooksRepository.search(userId,type,pattern);
     }
+
+    @Override
+    public UserBooks removeBook(Integer bookId, Integer userId, String type) {
+        return userBooksRepository.removeBook(bookId, userId, type);
+    }
 }

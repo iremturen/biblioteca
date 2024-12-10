@@ -1,5 +1,6 @@
 package com.biblioteca.controllers;
 
+import com.biblioteca.models.CollectionBooks;
 import com.biblioteca.models.UserBooks;
 import com.biblioteca.services.interfaces.IUserBooksService;
 import lombok.AllArgsConstructor;
@@ -36,4 +37,9 @@ public class UserBooksController {
         return ResponseEntity.ok(userBooksService.search(userId,type,pattern));
     }
 
+    @DeleteMapping("/remove/{bookId}")
+    public ResponseEntity<UserBooks> removeBook(@PathVariable Integer bookId,@RequestBody Integer userId, @RequestBody String type ) {
+        userBooksService.removeBook(bookId,userId, type);
+        return ResponseEntity.ok().build();
+    }
 }
