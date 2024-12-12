@@ -1,55 +1,69 @@
 package com.biblioteca.controllers;
 
+import com.biblioteca.exceptions.BadRequestException;
+import com.biblioteca.exceptions.InvalidParameterException;
 import com.biblioteca.models.Book;
 import com.biblioteca.services.interfaces.IBookService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
 @CrossOrigin()
-@RequestMapping(value="api/books")
+@RequestMapping(value = "api/books")
 public class BookController {
 
     private IBookService bookService;
 
     @GetMapping
-    public ResponseEntity<List<Book>> getAllBooks() {
+    public ResponseEntity<?> getAllBooks() {
         try {
             List<Book> books = bookService.getAllBooks();
             return ResponseEntity.ok(books);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (BadRequestException | InvalidParameterException e) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
         }
     }
 
     @GetMapping("/{bookId}")
-    public ResponseEntity<Book> getBookByBookId(@PathVariable Integer bookId) {
+    public ResponseEntity<?> getBookByBookId(@PathVariable Integer bookId) {
         try {
             return ResponseEntity.ok(bookService.getBookByBookId(bookId));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (BadRequestException | InvalidParameterException e) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
         }
     }
 
     @GetMapping("/new_releases")
-    public ResponseEntity<List<Book>> getNewReleases() {
+    public ResponseEntity<?> getNewReleases() {
         try {
             return ResponseEntity.ok(bookService.getNewReleases());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (BadRequestException | InvalidParameterException e) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
         }
     }
 
     @GetMapping("/search/{pattern}")
-    public ResponseEntity<List<Book>> search(@PathVariable String pattern) {
+    public ResponseEntity<?> search(@PathVariable String pattern) {
         try {
             return ResponseEntity.ok(bookService.search(pattern));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (BadRequestException | InvalidParameterException e) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+
         }
     }
 

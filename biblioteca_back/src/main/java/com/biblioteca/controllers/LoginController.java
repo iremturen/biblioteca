@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @CrossOrigin()
-@RequestMapping(value="api")
+@RequestMapping(value="api/login")
 public class LoginController {
 
     private LoginService loginService;
