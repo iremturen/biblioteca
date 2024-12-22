@@ -15,13 +15,9 @@ import java.util.List;
 public class SettingsService implements ISettingsService {
 
     private ISettingsRepository settingsRepository;
-    @Override
-    public List<Settings> getFAQ() {
-        return settingsRepository.getFAQ();
-    }
 
     @Override
-    public List<Settings> getSupport() {
-        return settingsRepository.getSupport();
+    public List<Settings> getSettingsByType(String infoType) {
+        return settingsRepository.getSettingsByType(infoType);
     }
 }

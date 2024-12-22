@@ -3,12 +3,10 @@ package com.biblioteca.repositories;
 import com.biblioteca.models.Collections;
 import com.biblioteca.repositories.interfaces.ICollectionRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,8 +17,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CollectionsRepository implements ICollectionRepository {
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private JdbcTemplate jdbcTemplate;
-
 
     @Override
     public List<Collections> getCollecitonsByUserId(Integer userId) {

@@ -3,29 +3,26 @@ package com.biblioteca.repositories;
 import com.biblioteca.models.Settings;
 import com.biblioteca.repositories.interfaces.ISettingsRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 @Repository
 @AllArgsConstructor
 public class SettingsRepository implements ISettingsRepository {
 
-    private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate jdbcTemplateNamed;
+
 
     @Override
-    public List<Settings> getFAQ() {
-        String sql=" SELECT s.id, s.info_type, s.title, s.content FROM SETTINGS s WHERE s.info_type='FAQ'";
-        return jdbcTemplate.query(sql, rowMapper());
+    public List<Settings> getSettingsByType(String infoType) {
+        String sql = "SELECT s.id, s.info_type, s.title, s.content FROM SETTINGS s WHERE s.info_type = :infoType";
+        MapSqlParameterSource mapParams = new MapSqlParameterSource();
+        mapParams.addValue("infoType",infoType);
+        return jdbcTemplateNamed.query(sql, mapParams, rowMapper());
     }
-
-    @Override
-    public List<Settings> getSupport() {
-        String sql=" SELECT s.id, s.info_type, s.title, s.content FROM SETTINGS s WHERE s.info_type='SUPPORT'";
-        return jdbcTemplate.query(sql, rowMapper());    }
 
     private RowMapper<Settings> rowMapper(){
         return (rs, rowNum) -> new Settings(
@@ -35,4 +32,6 @@ public class SettingsRepository implements ISettingsRepository {
                 rs.getString("content")
                 );
     }
+
+
 }

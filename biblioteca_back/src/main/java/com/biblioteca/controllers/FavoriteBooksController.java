@@ -35,7 +35,7 @@ public class FavoriteBooksController {
         }
     }
 
-    @PostMapping("/remove/user/{userId}/book/{bookId}")
+    @DeleteMapping("/remove/user/{userId}/book/{bookId}")
     public ResponseEntity<?> removeFavoriteBook(@PathVariable Integer userId, @PathVariable Integer bookId) {
         try {
             favoriteBooksService.remove(userId, bookId);
@@ -63,7 +63,6 @@ public class FavoriteBooksController {
     public ResponseEntity<?> isFavorite(@PathVariable Integer bookId, @RequestParam Integer userId) {
         try {
             return ResponseEntity.ok(favoriteBooksService.isFavorite(bookId, userId));
-
         } catch (BadRequestException | InvalidParameterException e) {
             Map<String, String> err = new HashMap<>();
             err.put("message", e.getMessage());

@@ -8,6 +8,6 @@ import java.util.List;
 @Validated
 public interface ISettingsService {
 
-    List<Settings> getFAQ();
-    List<Settings> getSupport();
+    List<Settings> getSettingsByType( String infoType);
+
 }

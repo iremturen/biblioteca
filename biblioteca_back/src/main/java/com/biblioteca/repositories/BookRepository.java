@@ -1,7 +1,6 @@
 package com.biblioteca.repositories;
 
 import com.biblioteca.models.Book;
-import com.biblioteca.models.User;
 import com.biblioteca.repositories.interfaces.IBookRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -76,12 +75,15 @@ public class BookRepository implements IBookRepository {
     public List<Book> searchInCollection(Integer collectionId, String pattern) {
         String sql = "SELECT b.* FROM sys.COLLECTION_BOOKS cb " +
                 "JOIN sys.BOOK b ON cb.BOOKID = b.BOOKID " +
-                "WHERE cb.COLLECTIONID = " + collectionId +
-                " AND (b.BOOK_NAME LIKE '%" + pattern + "%' " +
-                "OR b.AUTHOR LIKE '%" + pattern + "%' " +
-                "OR b.BOOK_PAGE LIKE '%" + pattern + "%' " +
-                "OR b.PUBLISHING_HOUSE LIKE '%" + pattern + "%')";
-         return jdbcTemplate.query(sql, rowMapper());
+                "WHERE cb.COLLECTIONID = :collectionId " +
+                "AND (b.BOOK_NAME LIKE :pattern " +
+                "OR b.AUTHOR LIKE :pattern " +
+                "OR b.PUBLISHING_HOUSE LIKE :pattern)";
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("collectionId", collectionId)
+                .addValue("pattern", "%" + pattern + "%");
+        return jdbcTemplateNamed.query(sql, params, rowMapper());
     }
 
     @Override

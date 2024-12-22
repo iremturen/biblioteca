@@ -5,7 +5,6 @@ import com.biblioteca.models.Book;
 import com.biblioteca.models.UserBooks;
 import com.biblioteca.repositories.interfaces.IUserBooksRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -17,6 +16,7 @@ import java.util.List;
 public class UserBooksRepository implements IUserBooksRepository {
 
     private NamedParameterJdbcTemplate jdbcTemplateNamed;
+
     @Override
     public List<UserBooks> getBooksByStatus(Integer userId, String status) {
         String sql = "SELECT * FROM USER_BOOKS ub JOIN BOOK b ON ub.BOOKID = b.BOOKID " +

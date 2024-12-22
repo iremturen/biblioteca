@@ -22,28 +22,16 @@ public class SettingsController {
 
     private ISettingsService settingsService;
 
-    @GetMapping("/faq")
-    public ResponseEntity<?> getFAQ() {
+    @GetMapping("")
+    public ResponseEntity<?> getSettings(@RequestParam String infoType) {
         try {
-        List<Settings> faq =settingsService.getFAQ();
-        return ResponseEntity.ok(faq);
-    } catch (BadRequestException | InvalidParameterException e) {
-        Map<String, String> err = new HashMap<>();
-        err.put("message", e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
-    }
-    }
-
-    @GetMapping("/support")
-    public ResponseEntity<?> getSupport() {
-        try {
-        List<Settings> support =settingsService.getSupport();
-        return ResponseEntity.ok(support);
-    } catch (BadRequestException | InvalidParameterException e) {
-        Map<String, String> err = new HashMap<>();
-        err.put("message", e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+            List<Settings> settings = settingsService.getSettingsByType(infoType.toUpperCase());
+            return ResponseEntity.ok(settings);
+        } catch (BadRequestException | InvalidParameterException e) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
         }
-}
+    }
 
 }

@@ -55,8 +55,8 @@ public class BookController {
         }
     }
 
-    @GetMapping("/search/{pattern}")
-    public ResponseEntity<?> search(@PathVariable String pattern) {
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam String pattern) {
         try {
             return ResponseEntity.ok(bookService.search(pattern));
         } catch (BadRequestException | InvalidParameterException e) {
