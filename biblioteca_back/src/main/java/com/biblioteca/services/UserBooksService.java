@@ -38,7 +38,7 @@ public class UserBooksService implements IUserBooksService {
     }
 
     @Override
-    public UserBooks removeBook(Integer bookId, Integer userId, String type) {
-        return userBooksRepository.removeBook(bookId, userId, type);
+    public void removeBook(Integer bookId, Integer userId, Integer type) {
+         userBooksRepository.removeBook(bookId, userId, type);
     }
 }

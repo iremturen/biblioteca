@@ -67,7 +67,7 @@ public class UserBooksController {
     }
 
     @DeleteMapping("/remove/{bookId}")
-    public ResponseEntity<?> removeBook(@PathVariable Integer bookId, @RequestParam Integer userId, @RequestParam String type) {
+    public ResponseEntity<?> removeBook(@PathVariable Integer bookId, @RequestParam Integer userId, @RequestParam Integer type) {
         try {
             userBooksService.removeBook(bookId, userId, type);
             return ResponseEntity.ok().build();

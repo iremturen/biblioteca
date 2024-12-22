@@ -15,5 +15,5 @@ public interface IUserBooksService {
     Integer getCountByStatus(Integer userId, String status);
     Integer updateProgress(Integer userId, Integer bookId, Integer pageNum);
     List<UserBooks> search(Integer userId,Integer type,String pattern);
-    UserBooks removeBook(Integer bookId, Integer userId, String type );
+    void removeBook(Integer bookId, Integer userId, Integer type );
 }

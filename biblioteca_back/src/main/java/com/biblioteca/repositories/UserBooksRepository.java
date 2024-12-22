@@ -48,7 +48,7 @@ public class UserBooksRepository implements IUserBooksRepository {
 
     @Override
     public List<UserBooks> search(Integer userId, Integer type, String pattern) {
-        String statusValue = getStatusValue(type);
+        String statusValue = String.valueOf(getStatusValue(type));
 
         String sql = "SELECT * FROM USER_BOOKS ub" +
                 " JOIN BOOK b ON ub.BOOKID = b.BOOKID" +
@@ -63,20 +63,28 @@ public class UserBooksRepository implements IUserBooksRepository {
     }
 
     @Override
-    public UserBooks removeBook(Integer bookId, Integer userId, String type) {
-        return null;
+    public void removeBook(Integer bookId, Integer userId, Integer type) {
+        String statusValue = String.valueOf(getStatusValue(type));
+
+        String sql = "DELETE FROM USER_BOOKS WHERE userId = :userId " +
+                "AND bookId = :bookId AND status = :status";
+        MapSqlParameterSource mapParams = new MapSqlParameterSource();
+        mapParams.addValue("userId", userId);
+        mapParams.addValue("bookId", bookId);
+        mapParams.addValue("status", statusValue);
+        jdbcTemplateNamed.update(sql, mapParams);
     }
 
-    private String getStatusValue(Integer type) {
+    private BookStatus getStatusValue(Integer type) {
         switch (type) {
             case 1:
-                return "NOW_READING";
+                return BookStatus.NOW_READING;
             case 2:
-                return "WILL_READ";
+                return BookStatus.WILL_READ;
             case 3:
-                return "FINISHED";
+                return BookStatus.FINISHED;
             default:
-                return "";
+                throw new IllegalArgumentException("Invalid status type: " + type);
         }
     }
 
