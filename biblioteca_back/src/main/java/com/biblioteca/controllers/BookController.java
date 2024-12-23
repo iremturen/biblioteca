@@ -22,9 +22,9 @@ public class BookController {
     private IBookService bookService;
 
     @GetMapping
-    public ResponseEntity<?> getAllBooks() {
+    public ResponseEntity<?> getAllBooks(@RequestParam(required = false) String pattern) {
         try {
-            List<Book> books = bookService.getAllBooks();
+            List<Book> books = bookService.getAllBooks(pattern);
             return ResponseEntity.ok(books);
         } catch (BadRequestException | InvalidParameterException e) {
             Map<String, String> err = new HashMap<>();
@@ -54,18 +54,5 @@ public class BookController {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
         }
     }
-
-    @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam String pattern) {
-        try {
-            return ResponseEntity.ok(bookService.search(pattern));
-        } catch (BadRequestException | InvalidParameterException e) {
-            Map<String, String> err = new HashMap<>();
-            err.put("message", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
-
-        }
-    }
-
 
 }

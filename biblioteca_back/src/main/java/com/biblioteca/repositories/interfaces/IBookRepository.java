@@ -4,12 +4,10 @@ import com.biblioteca.models.Book;
 
 public interface IBookRepository {
 
-    List<Book> getAllBooks();
+    List<Book> getAllBooks(String pattern);
     Book getBookByBookId(Integer bookId);
     List<Book> getNewReleases();
-    List<Book> search(String pattern);
     List<Book> getFavorites(Integer userId);
-    List<Book> getCollectionsBooks(Integer collectionId, String sortBy);
-    List<Book> searchInCollection(Integer collectionId, String pattern);
+    List<Book> getCollectionsBooks(Integer collectionId, String sortBy, String pattern);
     List<Book> sortBy(Integer collectionId, String sortBy, String order);
 }

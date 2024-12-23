@@ -8,8 +8,7 @@ import java.util.List;
 @Validated
 public interface IBookService {
 
-    List<Book> getAllBooks();
+    List<Book> getAllBooks(String pattern);
     Book getBookByBookId(Integer bookId);
     List<Book> getNewReleases();
-    List<Book> search(String pattern);
 }

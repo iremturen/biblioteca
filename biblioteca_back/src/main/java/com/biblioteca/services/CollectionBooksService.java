@@ -25,14 +25,10 @@ public class CollectionBooksService implements ICollectionBooksService {
     }
 
     @Override
-    public List<Book> getCollectionsBooks(Integer collectionId, String sortBy) {
-        return bookRepository.getCollectionsBooks(collectionId, sortBy);
+    public List<Book> getCollectionsBooks(Integer collectionId, String sortBy, String pattern) {
+        return bookRepository.getCollectionsBooks(collectionId, sortBy, pattern);
     }
 
-    @Override
-    public List<Book> search(Integer collectionId, String pattern) {
-        return bookRepository.searchInCollection(collectionId, pattern);
-    }
 
     @Override
     public List<Book> sortBy(Integer collectionId, String sortBy, String order) {

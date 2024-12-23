@@ -36,20 +36,9 @@ public class CollectionBooksController {
     }
 
     @GetMapping("/{collectionId}")
-    public ResponseEntity<?> getCollectionsBooks(@PathVariable Integer collectionId, @RequestParam(required = false, defaultValue = "date") String sortBy) {
+    public ResponseEntity<?> getCollectionsBooks(@PathVariable Integer collectionId, @RequestParam(required = false, defaultValue = "date") String sortBy, @RequestParam(required = false) String pattern) {
         try {
-            return ResponseEntity.ok(collectionBooksService.getCollectionsBooks(collectionId, sortBy));
-        } catch (BadRequestException | InvalidParameterException e) {
-            Map<String, String> err = new HashMap<>();
-            err.put("message", e.getMessage());
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
-        }
-    }
-
-    @GetMapping("/search/{collectionId}")
-    public ResponseEntity<?> search(@PathVariable Integer collectionId, @RequestParam String pattern) {
-        try {
-            return ResponseEntity.ok(collectionBooksService.search(collectionId, pattern));
+            return ResponseEntity.ok(collectionBooksService.getCollectionsBooks(collectionId, sortBy, pattern));
         } catch (BadRequestException | InvalidParameterException e) {
             Map<String, String> err = new HashMap<>();
             err.put("message", e.getMessage());

@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @AllArgsConstructor
@@ -19,9 +20,15 @@ public class BookRepository implements IBookRepository {
     private NamedParameterJdbcTemplate jdbcTemplateNamed;
 
     @Override
-    public List<Book> getAllBooks() {
-        String sql=" SELECT b.id, b.bookId, b.book_name, b.author, b.book_page, b.visibility, b.addition_at, b.publishing_house, b.publishing_year, b.language, b.image, b.description FROM BOOK b";
-        return jdbcTemplate.query(sql, rowMapper());
+    public List<Book> getAllBooks(String pattern) {
+        String sql=" SELECT * FROM BOOK b";
+
+        MapSqlParameterSource mapParams = new MapSqlParameterSource();
+        if (Objects.nonNull(pattern) && !pattern.trim().isEmpty()) {
+            sql += " WHERE b.BOOK_NAME LIKE :pattern OR b.AUTHOR LIKE :pattern";
+            mapParams.addValue("pattern", "%" + pattern + "%");
+        }
+        return jdbcTemplateNamed.query(sql, mapParams, rowMapper());
     }
 
     @Override
@@ -39,12 +46,6 @@ public class BookRepository implements IBookRepository {
     }
 
     @Override
-    public List<Book> search(String pattern) {
-        String sql="SELECT * FROM BOOK WHERE BOOK_NAME LIKE '%"+pattern+"%' OR AUTHOR LIKE '%"+pattern+"%'";
-        return jdbcTemplate.query(sql, rowMapper());
-    }
-
-    @Override
     public List<Book> getFavorites(Integer userId) {
         String sql = "SELECT fb.*, b.* FROM sys.FAVORITE_BOOKS fb JOIN sys.BOOK b ON fb.bookId = b.bookId WHERE USERID= :userId AND STATUS= 1;";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
@@ -53,8 +54,12 @@ public class BookRepository implements IBookRepository {
     }
 
     @Override
-    public List<Book> getCollectionsBooks(Integer collectionId, String sortBy) {
+    public List<Book> getCollectionsBooks(Integer collectionId, String sortBy, String pattern) {
         String query ="SELECT b.* FROM sys.COLLECTION_BOOKS cb JOIN sys.BOOK b ON cb.BOOKID = b.BOOKID WHERE cb.COLLECTIONID = :collectionId";
+
+        if (Objects.nonNull(pattern) && !pattern.trim().isEmpty()) {
+            query += " AND (b.BOOK_NAME LIKE :pattern OR b.AUTHOR LIKE :pattern OR b.PUBLISHING_HOUSE LIKE :pattern)";
+        }
 
         String orderByClause = switch (sortBy) {
             case "title" -> " ORDER BY b.BOOK_NAME";
@@ -68,22 +73,11 @@ public class BookRepository implements IBookRepository {
 
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("collectionId", collectionId);
+
+        if (Objects.nonNull(pattern) && !pattern.trim().isEmpty()) {
+            mapParams.addValue("pattern", "%" + pattern + "%");
+        }
         return jdbcTemplateNamed.query(sql, mapParams, rowMapper());
-    }
-
-    @Override
-    public List<Book> searchInCollection(Integer collectionId, String pattern) {
-        String sql = "SELECT b.* FROM sys.COLLECTION_BOOKS cb " +
-                "JOIN sys.BOOK b ON cb.BOOKID = b.BOOKID " +
-                "WHERE cb.COLLECTIONID = :collectionId " +
-                "AND (b.BOOK_NAME LIKE :pattern " +
-                "OR b.AUTHOR LIKE :pattern " +
-                "OR b.PUBLISHING_HOUSE LIKE :pattern)";
-
-        MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("collectionId", collectionId)
-                .addValue("pattern", "%" + pattern + "%");
-        return jdbcTemplateNamed.query(sql, params, rowMapper());
     }
 
     @Override

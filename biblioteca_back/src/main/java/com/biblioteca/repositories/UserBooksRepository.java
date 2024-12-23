@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @AllArgsConstructor
@@ -18,12 +19,21 @@ public class UserBooksRepository implements IUserBooksRepository {
     private NamedParameterJdbcTemplate jdbcTemplateNamed;
 
     @Override
-    public List<UserBooks> getBooksByStatus(Integer userId, String status) {
+    public List<UserBooks> getBooksByStatus(Integer userId, Integer status, String pattern) {
+        String statusValue = String.valueOf(getStatusValue(status));
+
         String sql = "SELECT * FROM USER_BOOKS ub JOIN BOOK b ON ub.BOOKID = b.BOOKID " +
                 "WHERE ub.USERID = :userId AND ub.STATUS = :status";
+
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("userId", userId);
-        mapParams.addValue("status", status);
+        mapParams.addValue("status", statusValue);
+
+        if (Objects.nonNull(pattern)  && !pattern.isEmpty()) {
+            sql += " AND (b.BOOK_NAME LIKE :pattern OR b.AUTHOR LIKE :pattern)";
+            mapParams.addValue("pattern", "%" + pattern + "%");
+        }
+
         return jdbcTemplateNamed.query(sql, mapParams, rowMapper());
     }
     @Override
@@ -46,21 +56,6 @@ public class UserBooksRepository implements IUserBooksRepository {
         return jdbcTemplateNamed.update(sql, mapParams);
     }
 
-    @Override
-    public List<UserBooks> search(Integer userId, Integer type, String pattern) {
-        String statusValue = String.valueOf(getStatusValue(type));
-
-        String sql = "SELECT * FROM USER_BOOKS ub" +
-                " JOIN BOOK b ON ub.BOOKID = b.BOOKID" +
-                " WHERE ub.USERID = :userId" +
-                " AND ub.STATUS = :statusValue" +
-                " AND (b.BOOK_NAME LIKE :pattern OR b.AUTHOR LIKE :pattern)";
-        MapSqlParameterSource mapParams = new MapSqlParameterSource();
-        mapParams.addValue("userId", userId);
-        mapParams.addValue("statusValue", statusValue);
-        mapParams.addValue("pattern", "%" + pattern + "%");
-        return jdbcTemplateNamed.query(sql, mapParams, rowMapper());
-    }
 
     @Override
     public void removeBook(Integer bookId, Integer userId, Integer type) {

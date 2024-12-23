@@ -23,9 +23,9 @@ public class UserBooksController {
     private IUserBooksService userBooksService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getUserBooks(@PathVariable Integer userId, @RequestParam String status) {
+    public ResponseEntity<?> getUserBooks(@PathVariable Integer userId, @RequestParam Integer status ,@RequestParam(required = false) String pattern) {
         try {
-            return ResponseEntity.ok(userBooksService.getBooksByStatus(userId, status));
+            return ResponseEntity.ok(userBooksService.getBooksByStatus(userId, status, pattern));
         } catch (BadRequestException | InvalidParameterException e) {
             Map<String, String> err = new HashMap<>();
             err.put("message", e.getMessage());
@@ -48,17 +48,6 @@ public class UserBooksController {
     public ResponseEntity<?> updateProgress(@PathVariable Integer bookId, @RequestParam Integer userId, @RequestParam Integer pageNum) {
         try {
             return ResponseEntity.ok(userBooksService.updateProgress(userId, bookId, pageNum));
-        } catch (BadRequestException | InvalidParameterException e) {
-            Map<String, String> err = new HashMap<>();
-            err.put("message", e.getMessage());
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
-        }
-    }
-
-    @GetMapping("/search/{userId}")
-    public ResponseEntity<?> search(@PathVariable Integer userId, @RequestParam Integer type, @RequestParam String pattern) {
-        try {
-            return ResponseEntity.ok(userBooksService.search(userId, type, pattern));
         } catch (BadRequestException | InvalidParameterException e) {
             Map<String, String> err = new HashMap<>();
             err.put("message", e.getMessage());

@@ -16,8 +16,8 @@ public class BookService implements IBookService {
 
     private IBookRepository bookRepository;
     @Override
-    public List<Book> getAllBooks() {
-        return bookRepository.getAllBooks();
+    public List<Book> getAllBooks(String pattern) {
+        return bookRepository.getAllBooks(pattern);
     }
 
     @Override
@@ -30,8 +30,4 @@ public class BookService implements IBookService {
         return bookRepository.getNewReleases();
     }
 
-    @Override
-    public List<Book> search(String pattern) {
-        return bookRepository.search(pattern);
-    }
 }

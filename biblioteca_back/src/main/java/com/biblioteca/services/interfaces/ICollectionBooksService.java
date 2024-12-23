@@ -10,8 +10,7 @@ import java.util.List;
 public interface ICollectionBooksService {
 
     Integer getBookCount(Integer collectionId);
-    List<Book> getCollectionsBooks(Integer collectionId, String sortBy);
-    List<Book> search(Integer collectionId, String pattern);
+    List<Book> getCollectionsBooks(Integer collectionId, String sortBy, String pattern);
     List<Book> sortBy(Integer collectionId, String sortBy, String order);
     void addBooksToCollection(Integer collectionId, List<Long> addedBooks);
     void removeBook(CollectionBooks collectionsBooks);

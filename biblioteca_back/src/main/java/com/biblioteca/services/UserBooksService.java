@@ -18,8 +18,8 @@ public class UserBooksService implements IUserBooksService {
 
 
     @Override
-    public List<UserBooks> getBooksByStatus(Integer userId, String status) {
-        return userBooksRepository.getBooksByStatus(userId, status);
+    public List<UserBooks> getBooksByStatus(Integer userId, Integer status, String pattern) {
+        return userBooksRepository.getBooksByStatus(userId, status, pattern);
     }
 
     @Override
@@ -30,11 +30,6 @@ public class UserBooksService implements IUserBooksService {
     @Override
     public Integer updateProgress(Integer userId, Integer bookId, Integer pageNum) {
         return userBooksRepository.updateProgress(userId,bookId, pageNum);
-    }
-
-    @Override
-    public List<UserBooks> search(Integer userId, Integer type, String pattern) {
-        return userBooksRepository.search(userId,type,pattern);
     }
 
     @Override
