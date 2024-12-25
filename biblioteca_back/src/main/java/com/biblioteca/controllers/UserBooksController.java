@@ -66,4 +66,16 @@ public class UserBooksController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
         }
     }
+
+    @PostMapping("/add/{bookId}")
+    public ResponseEntity<?> addBookByStatus(@PathVariable Integer bookId, @RequestParam Integer userId, @RequestParam Integer status) {
+        try {
+            userBooksService. addBookByStatus(bookId, userId, status);
+            return ResponseEntity.ok().build();
+        } catch (BadRequestException | InvalidParameterException e) {
+            Map<String, String> err = new HashMap<>();
+            err.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+        }
+    }
 }

@@ -70,6 +70,24 @@ public class UserBooksRepository implements IUserBooksRepository {
         jdbcTemplateNamed.update(sql, mapParams);
     }
 
+    @Override
+    public void addBookByStatus(Integer bookId, Integer userId, Integer status) {
+        String statusValue = String.valueOf(getStatusValue(status));
+
+        String check="SELECT COUNT(*) AS COUNT FROM user_books WHERE userId = :userId AND bookId = :bookId AND status=:status";
+        String sql="INSERT INTO user_books (userId, bookId, status, updated_at, progress) VALUES (:userId, :bookId, :status, NOW(),0)";
+
+        MapSqlParameterSource mapParams = new MapSqlParameterSource();
+        mapParams.addValue("userId", userId);
+        mapParams.addValue("bookId", bookId);
+        mapParams.addValue("status", statusValue);
+
+        int count= jdbcTemplateNamed.queryForObject(check, mapParams, Integer.class);
+        if(count==0){
+            jdbcTemplateNamed.update(sql, mapParams);
+        }
+    }
+
     private BookStatus getStatusValue(Integer type) {
         switch (type) {
             case 1:
@@ -106,7 +124,6 @@ public class UserBooksRepository implements IUserBooksRepository {
                     rs.getInt("bookId"),
                     BookStatus.valueOf(rs.getString("status")),
                     rs.getDate("updated_at"),
-                    rs.getInt("is_favorite"),
                     rs.getInt("progress"),
                     book
             );

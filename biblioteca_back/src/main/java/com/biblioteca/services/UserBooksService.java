@@ -36,4 +36,10 @@ public class UserBooksService implements IUserBooksService {
     public void removeBook(Integer bookId, Integer userId, Integer type) {
          userBooksRepository.removeBook(bookId, userId, type);
     }
+
+    @Override
+    public void addBookByStatus(Integer bookId, Integer userId, Integer status) {
+        userBooksRepository.addBookByStatus(bookId, userId, status);
+
+    }
 }
