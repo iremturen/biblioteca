@@ -3,6 +3,7 @@ package com.biblioteca.controllers;
 import com.biblioteca.exceptions.BadRequestException;
 import com.biblioteca.exceptions.InvalidParameterException;
 import com.biblioteca.models.User;
+import com.biblioteca.requests.UserRegisterRequest;
 import com.biblioteca.services.interfaces.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,5 +44,14 @@ public class UserController {
         }
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody UserRegisterRequest request) {
+        try {
+            userService.register(request);
+            return ResponseEntity.ok("User registered successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Registration failed: " + e.getMessage());
+        }
+    }
 
 }
