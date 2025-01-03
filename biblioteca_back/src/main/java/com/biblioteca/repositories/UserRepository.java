@@ -82,6 +82,13 @@ public class UserRepository implements IUserRepository {
         return List.of("User successfully registered");
     }
 
+    @Override
+    public Integer findUserIdByUsername(String username) {
+        String sql="SELECT USERID FROM USER where username=:username";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("username", username);
+        return jdbcTemplateNamed.queryForObject(sql, params, Integer.class);    }
+
     private Integer generateUniqueUserId() {
         Random random = new Random();
         Integer userId;

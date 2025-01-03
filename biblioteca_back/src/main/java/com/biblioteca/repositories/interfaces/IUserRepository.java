@@ -11,4 +11,5 @@ public interface IUserRepository {
     User getUserByUserId(Integer userId);
     User update(Integer userId, User user);
     List<String> register(UserRegisterRequest request);
+    Integer findUserIdByUsername(String username);
 }

@@ -19,6 +19,7 @@ public class UserLogin implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private Integer userId;
     private String username;
     private String password;
 }
