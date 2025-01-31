@@ -1,4 +1,4 @@
-package com.biblioteca.models.response;
+package com.biblioteca.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthResponse {
+public class FeedbackRequest {
 
-    private String token;
-    private Integer userId;
     private String email;
-
+    private String subject;
+    private String body;
 }

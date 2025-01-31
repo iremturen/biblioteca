@@ -26,6 +26,8 @@ public class LoginService implements ILoginService {
     private final JwtUtil jwtUtil;
     private IUserRepository userRepository;
 
+
+
     @Override
     public AuthResponse login(UserLoginRequest request) throws Exception {
         try {
@@ -37,10 +39,11 @@ public class LoginService implements ILoginService {
         }
 
         Integer userId = userRepository.findUserIdByUsername(request.getUsername());
+        User user=userRepository.getUserByUserId(userId);
         Objects.requireNonNull(userId, "User ID not found");
 
-        String token = jwtUtil.generateToken(request.getUsername(), userId);
-        return new AuthResponse(token, userId);
+        String token = jwtUtil.generateToken(request.getUsername(), userId, user.getEmail());
+        return new AuthResponse(token, userId, user.getEmail());
 
     }
 }
