@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+#YML#
+/src/main/resources/*.yml
+
+# Ignore application.properties file
+application.properties
+/src/main/resources/application.properties
