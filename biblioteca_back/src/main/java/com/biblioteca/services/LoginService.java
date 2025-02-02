@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -25,6 +26,8 @@ public class LoginService implements ILoginService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private IUserRepository userRepository;
+    private IUserLoginRepository userLoginRepository;
+    private PasswordEncoder passwordEncoder;
 
 
 
@@ -45,5 +48,19 @@ public class LoginService implements ILoginService {
         String token = jwtUtil.generateToken(request.getUsername(), userId, user.getEmail());
         return new AuthResponse(token, userId, user.getEmail());
 
+    }
+
+    @Override
+    public void changePassword(String newPassword, String currentPassword, String token) {
+        String username = jwtUtil.getUserFromToken(token);
+        UserLogin userLogin =userLoginRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!passwordEncoder.matches(currentPassword, userLogin.getPassword())) {
+            throw new BadCredentialsException("Old password is incorrect.");
+        }
+
+        userLogin.setPassword(passwordEncoder.encode(newPassword));
+        userLoginRepository.save(userLogin);
     }
 }
