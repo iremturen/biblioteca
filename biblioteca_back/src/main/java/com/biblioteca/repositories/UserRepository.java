@@ -52,34 +52,40 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public List<String> register(UserRegisterRequest request) {
-        String hashedPassword = passwordEncoder.encode(request.getPassword());
-        Integer userId = generateUniqueUserId();
 
-        String userLoginSql = "INSERT INTO user_login (username, password) VALUES (:username, :password)";
-        MapSqlParameterSource userLoginParams = new MapSqlParameterSource();
-        userLoginParams.addValue("username", request.getUsername());
-        userLoginParams.addValue("password", hashedPassword);
+        String validation = isUserExists(request.getUsername(), request.getEmail(),request.getTelNo());
+        if (validation != null) {
+            throw new IllegalArgumentException(validation);
+        }else {
+            String hashedPassword = passwordEncoder.encode(request.getPassword());
+            Integer userId = generateUniqueUserId();
 
-        jdbcTemplateNamed.update(userLoginSql, userLoginParams);
+            String userLoginSql = "INSERT INTO user_login (username, password, user_id) VALUES (:username, :password, :user_id)";
+            MapSqlParameterSource userLoginParams = new MapSqlParameterSource();
+            userLoginParams.addValue("username", request.getUsername());
+            userLoginParams.addValue("password", hashedPassword);
+            userLoginParams.addValue("user_id", userId);
+            jdbcTemplateNamed.update(userLoginSql, userLoginParams);
 
-        String userSql = "INSERT INTO user (userId, username, name, surname, email, tel_no, country, city, " +
-                "birth_date) VALUES (:userId, :username, :name, :surname, :email, :tel_no, " +
-                ":country, :city, :birth_date)";
+            String userSql = "INSERT INTO user (userId, username, name, surname, email, tel_no, country, city, " +
+                    "birth_date) VALUES (:userId, :username, :name, :surname, :email, :tel_no, " +
+                    ":country, :city, :birth_date)";
 
-        MapSqlParameterSource userParams = new MapSqlParameterSource();
-        userParams.addValue("userId", userId);
-        userParams.addValue("username", request.getUsername());
-        userParams.addValue("name", request.getName());
-        userParams.addValue("surname", request.getSurname());
-        userParams.addValue("email", request.getEmail());
-        userParams.addValue("tel_no", request.getTelNo());
-        userParams.addValue("country", request.getCountry());
-        userParams.addValue("city", request.getCity());
-        userParams.addValue("birth_date", request.getBirthDate());
+            MapSqlParameterSource userParams = new MapSqlParameterSource();
+            userParams.addValue("userId", userId);
+            userParams.addValue("username", request.getUsername());
+            userParams.addValue("name", request.getName());
+            userParams.addValue("surname", request.getSurname());
+            userParams.addValue("email", request.getEmail());
+            userParams.addValue("tel_no", request.getTelNo());
+            userParams.addValue("country", request.getCountry());
+            userParams.addValue("city", request.getCity());
+            userParams.addValue("birth_date", request.getBirthDate());
 
-        jdbcTemplateNamed.update(userSql, userParams);
+            jdbcTemplateNamed.update(userSql, userParams);
 
-        return List.of("User successfully registered");
+            return List.of("User successfully registered");
+        }
     }
 
     @Override
@@ -102,6 +108,20 @@ public class UserRepository implements IUserRepository {
         } while (jdbcTemplateNamed.queryForObject(checkSql, params, Integer.class) > 0);
 
         return userId;
+    }
+
+    private String isUserExists(String username, String email, String telNo){
+        String sql = "SELECT COUNT(*) FROM user WHERE username = :username OR email = :email OR tel_no = :tel_no";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("username", username);
+        params.addValue("email", email);
+        params.addValue("tel_no", telNo);
+
+        int count = jdbcTemplateNamed.queryForObject(sql, params, Integer.class);
+        if (count > 0) {
+            return "This email, username or phone number are already registered.";
+        }
+      return null;
     }
 
     private RowMapper<User> rowMapper(){

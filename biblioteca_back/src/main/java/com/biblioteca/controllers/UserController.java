@@ -49,6 +49,8 @@ public class UserController {
         try {
             userService.register(request);
             return ResponseEntity.ok("User registered successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Registration failed: " + e.getMessage());
         }
