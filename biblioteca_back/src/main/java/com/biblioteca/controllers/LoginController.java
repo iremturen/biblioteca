@@ -1,16 +1,19 @@
 package com.biblioteca.controllers;
 
+import com.biblioteca.exceptions.BadRequestException;
+import com.biblioteca.requests.ChangePasswordRequest;
 import com.biblioteca.requests.UserLoginRequest;
 import com.biblioteca.models.response.AuthResponse;
-import com.biblioteca.services.LoginService;
 import com.biblioteca.services.interfaces.ILoginService;
 import com.biblioteca.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -44,5 +47,21 @@ public class LoginController {
         }
     }
 
-
+    @PostMapping("change_password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request, @RequestHeader("Authorization") String token) {
+        try {
+            loginService.changePassword(request.getNewPassword(), request.getCurrentPassword(),token);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Password changed successfully");
+            return ResponseEntity.ok(response);
+        } catch (BadRequestException e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Old password is incorrect.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "An error occurred during password change.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }
