@@ -1,5 +1,6 @@
 package com.biblioteca.repositories;
 
+import com.biblioteca.exceptions.BadRequestException;
 import com.biblioteca.models.User;
 import com.biblioteca.repositories.interfaces.IUserRepository;
 import com.biblioteca.requests.UserRegisterRequest;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 @Repository
@@ -30,24 +32,29 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public User update(Integer userId, User user) {
-        String sql= "UPDATE USER SET username = :username, name = :name, surname = :surname, " +
-                "email = :email, tel_no = :tel_no, country = :country, city = :city, profile_image = :profile_image, " +
-                "birth_date = :birth_date WHERE userId = :userId";
+        String validation = isUserInfoExists(userId, user.getUsername(), user.getEmail(),user.getTel_no());
+        if (validation != null) {
+            throw new BadRequestException(validation);
+        }else {
+            String sql = "UPDATE USER SET username = :username, name = :name, surname = :surname, " +
+                    "email = :email, tel_no = :tel_no, country = :country, city = :city, profile_image = :profile_image, " +
+                    "birth_date = :birth_date WHERE userId = :userId";
 
-        MapSqlParameterSource mapParams = new MapSqlParameterSource();
-        mapParams.addValue("userId",userId);
-        mapParams.addValue("username", user.getUsername());
-        mapParams.addValue("name", user.getName());
-        mapParams.addValue("surname", user.getSurname());
-        mapParams.addValue("email", user.getEmail());
-        mapParams.addValue("tel_no", user.getTel_no());
-        mapParams.addValue("country", user.getCountry());
-        mapParams.addValue("city", user.getCity());
-        mapParams.addValue("birth_date", user.getBirth_date());
-        mapParams.addValue("profile_image", user.getProfile_image());
+            MapSqlParameterSource mapParams = new MapSqlParameterSource();
+            mapParams.addValue("userId", userId);
+            mapParams.addValue("username", user.getUsername());
+            mapParams.addValue("name", user.getName());
+            mapParams.addValue("surname", user.getSurname());
+            mapParams.addValue("email", user.getEmail());
+            mapParams.addValue("tel_no", user.getTel_no());
+            mapParams.addValue("country", user.getCountry());
+            mapParams.addValue("city", user.getCity());
+            mapParams.addValue("birth_date", user.getBirth_date());
+            mapParams.addValue("profile_image", user.getProfile_image());
 
-        jdbcTemplateNamed.update(sql,mapParams);
-        return getUserByUserId(userId);
+            jdbcTemplateNamed.update(sql, mapParams);
+            return getUserByUserId(userId);
+        }
     }
 
     @Override
@@ -122,6 +129,21 @@ public class UserRepository implements IUserRepository {
             return "This email, username or phone number are already registered.";
         }
       return null;
+    }
+
+    private String isUserInfoExists(Integer userId, String username, String email, String telNo){
+        String sql = "SELECT COUNT(*) FROM user WHERE  (username = :username OR email = :email OR tel_no = :tel_no) AND USERID <> :userId";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("username", username);
+        params.addValue("email", email);
+        params.addValue("tel_no", telNo);
+        params.addValue("userId", userId);
+
+        int count = jdbcTemplateNamed.queryForObject(sql, params, Integer.class);
+        if (Objects.nonNull(count) && count > 0) {
+            return "This email, username, or phone number is already in use.";
+        }
+        return null;
     }
 
     private RowMapper<User> rowMapper(){

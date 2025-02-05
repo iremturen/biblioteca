@@ -41,6 +41,8 @@ public class UserController {
             Map<String, String> err = new HashMap<>();
             err.put("message", e.getMessage());
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
