@@ -27,17 +27,19 @@ public class UserRepository implements IUserRepository {
         String query = "SELECT * FROM USER WHERE USERID = :userId ";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("userId", userId);
-        return jdbcTemplateNamed.queryForObject(query, mapParams, rowMapper());
+        User result = jdbcTemplateNamed.queryForObject(query, mapParams, rowMapper());
+        return Objects.requireNonNull(result, "User not found with id: " + userId);
     }
 
     @Override
     public User update(Integer userId, User user) {
-        String validation = isUserInfoExists(userId, user.getUsername(), user.getEmail(),user.getTel_no());
+        String validation = isUserInfoExists(userId, user.getUsername(), user.getEmail(), user.getTel_no());
         if (validation != null) {
             throw new BadRequestException(validation);
-        }else {
+        } else {
             String sql = "UPDATE USER SET username = :username, name = :name, surname = :surname, " +
-                    "email = :email, tel_no = :tel_no, country = :country, city = :city, profile_image = :profile_image, " +
+                    "email = :email, tel_no = :tel_no, country = :country, city = :city, profile_image = :profile_image, "
+                    +
                     "birth_date = :birth_date WHERE userId = :userId";
 
             MapSqlParameterSource mapParams = new MapSqlParameterSource();
@@ -60,10 +62,10 @@ public class UserRepository implements IUserRepository {
     @Override
     public List<String> register(UserRegisterRequest request) {
 
-        String validation = isUserExists(request.getUsername(), request.getEmail(),request.getTelNo());
+        String validation = isUserExists(request.getUsername(), request.getEmail(), request.getTelNo());
         if (validation != null) {
             throw new IllegalArgumentException(validation);
-        }else {
+        } else {
             String hashedPassword = passwordEncoder.encode(request.getPassword());
             Integer userId = generateUniqueUserId();
 
@@ -97,41 +99,41 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public Integer findUserIdByUsername(String username) {
-        String sql="SELECT USERID FROM USER where username=:username";
+        String sql = "SELECT USERID FROM USER where username=:username";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("username", username);
-        return jdbcTemplateNamed.queryForObject(sql, params, Integer.class);    }
+        return jdbcTemplateNamed.queryForObject(sql, params, Integer.class);
+    }
 
     private Integer generateUniqueUserId() {
         Random random = new Random();
         Integer userId;
-
         String checkSql = "SELECT COUNT(*) FROM user WHERE userId = :userId";
         MapSqlParameterSource params = new MapSqlParameterSource();
 
         do {
             userId = 1000 + random.nextInt(90000);
             params.addValue("userId", userId);
-        } while (jdbcTemplateNamed.queryForObject(checkSql, params, Integer.class) > 0);
+        } while (Objects.requireNonNullElse(jdbcTemplateNamed.queryForObject(checkSql, params, Integer.class), 0) > 0);
 
         return userId;
     }
 
-    private String isUserExists(String username, String email, String telNo){
+    private String isUserExists(String username, String email, String telNo) {
         String sql = "SELECT COUNT(*) FROM user WHERE username = :username OR email = :email OR tel_no = :tel_no";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("username", username);
         params.addValue("email", email);
         params.addValue("tel_no", telNo);
 
-        int count = jdbcTemplateNamed.queryForObject(sql, params, Integer.class);
-        if (count > 0) {
+        Integer count = jdbcTemplateNamed.queryForObject(sql, params, Integer.class);
+        if (count != null && count > 0) {
             return "This email, username or phone number are already registered.";
         }
-      return null;
+        return null;
     }
 
-    private String isUserInfoExists(Integer userId, String username, String email, String telNo){
+    private String isUserInfoExists(Integer userId, String username, String email, String telNo) {
         String sql = "SELECT COUNT(*) FROM user WHERE  (username = :username OR email = :email OR tel_no = :tel_no) AND USERID <> :userId";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("username", username);
@@ -139,14 +141,14 @@ public class UserRepository implements IUserRepository {
         params.addValue("tel_no", telNo);
         params.addValue("userId", userId);
 
-        int count = jdbcTemplateNamed.queryForObject(sql, params, Integer.class);
-        if (Objects.nonNull(count) && count > 0) {
+        Integer count = jdbcTemplateNamed.queryForObject(sql, params, Integer.class);
+        if (Objects.requireNonNullElse(count, 0) > 0) {
             return "This email, username, or phone number is already in use.";
         }
         return null;
     }
 
-    private RowMapper<User> rowMapper(){
+    private RowMapper<User> rowMapper() {
         return (rs, rowNum) -> new User(
                 rs.getInt("id"),
                 rs.getInt("userId"),
@@ -158,7 +160,6 @@ public class UserRepository implements IUserRepository {
                 rs.getString("country"),
                 rs.getString("city"),
                 rs.getDate("birth_date"),
-                rs.getString("profile_image")
-                );
+                rs.getString("profile_image"));
     }
 }

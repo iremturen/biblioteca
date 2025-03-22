@@ -18,7 +18,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @CrossOrigin()
-@RequestMapping(value="api")
+@RequestMapping(value = "api")
 public class LoginController {
     private final JwtUtil jwtUtil;
     private final ILoginService loginService;
@@ -48,9 +48,10 @@ public class LoginController {
     }
 
     @PostMapping("change_password")
-    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request,
+            @RequestHeader("Authorization") String token) {
         try {
-            loginService.changePassword(request.getNewPassword(), request.getCurrentPassword(),token);
+            loginService.changePassword(request.getNewPassword(), request.getCurrentPassword(), token);
             Map<String, String> response = new HashMap<>();
             response.put("message", "Password changed successfully");
             return ResponseEntity.ok(response);

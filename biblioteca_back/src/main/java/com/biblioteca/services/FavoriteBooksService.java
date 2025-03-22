@@ -1,7 +1,6 @@
 package com.biblioteca.services;
 
 import com.biblioteca.models.Book;
-import com.biblioteca.models.FavoriteBooks;
 import com.biblioteca.repositories.interfaces.IBookRepository;
 import com.biblioteca.repositories.interfaces.IFavoriteBooksRepository;
 import com.biblioteca.services.interfaces.IFavoriteBooksService;

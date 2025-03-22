@@ -3,7 +3,6 @@ package com.biblioteca.controllers;
 import com.biblioteca.exceptions.BadRequestException;
 import com.biblioteca.exceptions.InvalidParameterException;
 import com.biblioteca.requests.FeedbackRequest;
-import com.biblioteca.services.FeedbackService;
 import com.biblioteca.services.interfaces.IFeedbackService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,8 @@ public class FeedbackController {
     @PostMapping("/send")
     public ResponseEntity<?> sendFeedback(@RequestBody FeedbackRequest feedbackRequest) {
         try {
-            feedbackService.sendFeedBack(feedbackRequest.getEmail(), feedbackRequest.getSubject(), feedbackRequest.getBody());
+            feedbackService.sendFeedBack(feedbackRequest.getEmail(), feedbackRequest.getSubject(),
+                    feedbackRequest.getBody());
             Map<String, String> successResponse = new HashMap<>();
             successResponse.put("message", "Feedback sent successfully");
             return ResponseEntity.ok(successResponse);

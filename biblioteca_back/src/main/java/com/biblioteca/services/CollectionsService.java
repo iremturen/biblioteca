@@ -16,12 +16,12 @@ public class CollectionsService implements ICollectionsService {
 
     private ICollectionRepository collectionRepository;
     @Override
-    public List<Collections> getCollecitonsByUserId(Integer userId) {
+    public List<Collections> getCollectionsByUserId(Integer userId) {
         return collectionRepository.getCollecitonsByUserId(userId);
     }
 
     @Override
-    public Collections getCollecitonById(Integer collectionId) {
+    public Collections getCollectionById(Integer collectionId) {
         return collectionRepository.getCollecitonById(collectionId);
     }
 

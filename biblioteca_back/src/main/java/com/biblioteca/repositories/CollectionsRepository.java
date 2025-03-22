@@ -1,46 +1,52 @@
 package com.biblioteca.repositories;
 
+import com.biblioteca.mappers.CollectionsRowMapper;
 import com.biblioteca.models.Collections;
 import com.biblioteca.repositories.interfaces.ICollectionRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
+import java.util.Objects;
 
 @AllArgsConstructor
 @Repository
 public class CollectionsRepository implements ICollectionRepository {
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private CollectionsRowMapper collectionsRowMapper;
 
     @Override
     public List<Collections> getCollecitonsByUserId(Integer userId) {
-        String sql= "SELECT * FROM COLLECTIONS WHERE USERID = :userId";
+        String sql = "SELECT * FROM COLLECTIONS WHERE USERID = :userId";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("userId", userId);
-        return namedParameterJdbcTemplate.query(sql, mapParams, rowMapper());
+        return namedParameterJdbcTemplate.query(sql, mapParams, collectionsRowMapper);
     }
 
     @Override
     public Collections getCollecitonById(Integer collectionId) {
-        String sql= "SELECT * FROM COLLECTIONS WHERE COLLECTIONID = :collectionId";
+        String sql = "SELECT * FROM COLLECTIONS WHERE COLLECTIONID = :collectionId";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("collectionId", collectionId);
-        return namedParameterJdbcTemplate.queryForObject(sql, mapParams, rowMapper());
+        Collections result = namedParameterJdbcTemplate.queryForObject(sql, mapParams, collectionsRowMapper);
+        return Objects.requireNonNull(result, "Collection not found with id: " + collectionId);
     }
 
     @Override
     public Collections update(Integer collectionId, Collections collections) {
-        String sql="UPDATE COLLECTIONS c SET  c.COLLECTION_NAME = :collection_name, c.DESCRIPTION= :descripiton , c.COVER= :cover  where COLLECTIONID = :collectionId";
+        String sql = "UPDATE COLLECTIONS SET "
+                + "COLLECTION_NAME = :collectionName, "
+                + "DESCRIPTION = :description, "
+                + "COVER = :cover "
+                + "WHERE COLLECTIONID = :collectionId";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("collectionId", collectionId);
-        mapParams.addValue("collection_name", collections.getCollection_name());
-        mapParams.addValue("descripiton", collections.getDescription());
+        mapParams.addValue("collectionName", collections.getCollection_name());
+        mapParams.addValue("description", collections.getDescription());
         mapParams.addValue("cover", collections.getCover());
         namedParameterJdbcTemplate.update(sql, mapParams);
         return collections;
@@ -68,10 +74,10 @@ public class CollectionsRepository implements ICollectionRepository {
 
     @Override
     public void delete(Integer collectionId) {
-        String sql  ="DELETE collections, collection_books"
-                + " FROM collections"
-                + " LEFT JOIN collection_books ON collections.collectionId = collection_books.collectionId"
-                + " WHERE collections.collectionId = :collectionId;";
+        String sql = "DELETE COLLECTIONS, COLLECTION_BOOKS"
+                + " FROM COLLECTIONS"
+                + " LEFT JOIN COLLECTION_BOOKS ON COLLECTIONS.COLLECTIONID = COLLECTION_BOOKS.COLLECTIONID"
+                + " WHERE COLLECTIONS.COLLECTIONID = :collectionId";
 
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("collectionId", collectionId);
@@ -85,23 +91,11 @@ public class CollectionsRepository implements ICollectionRepository {
         } while (isExistCollectionId(collectionId));
         return collectionId;
     }
-    public boolean isExistCollectionId(Integer collectionId){
-        String sql="SELECT EXISTS (SELECT 1 FROM COLLECTIONS WHERE COLLECTIONID = :collectionId)";
+
+    public boolean isExistCollectionId(Integer collectionId) {
+        String sql = "SELECT EXISTS (SELECT 1 FROM COLLECTIONS WHERE COLLECTIONID = :collectionId)";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("collectionId", collectionId);
-        return namedParameterJdbcTemplate.queryForObject(sql, mapParams, Boolean.class);
-    }
-
-    RowMapper<Collections> rowMapper(){
-        return(rs, rowNum) -> new Collections(
-                rs.getInt("id"),
-                rs.getInt("userId"),
-                rs.getInt("collectionId"),
-                rs.getString("collection_name"),
-                rs.getDate("updated_at"),
-                rs.getInt("visibility"),
-                rs.getString("cover"),
-                rs.getString("description")
-                );
+        return Boolean.TRUE.equals(namedParameterJdbcTemplate.queryForObject(sql, mapParams, Boolean.class));
     }
 }

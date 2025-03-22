@@ -2,7 +2,6 @@ package com.biblioteca.controllers;
 
 import com.biblioteca.exceptions.BadRequestException;
 import com.biblioteca.exceptions.InvalidParameterException;
-import com.biblioteca.models.Book;
 import com.biblioteca.models.Settings;
 import com.biblioteca.services.interfaces.ISettingsService;
 import lombok.AllArgsConstructor;
@@ -17,7 +16,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @CrossOrigin()
-@RequestMapping(value="api/settings")
+@RequestMapping(value = "api/settings")
 public class SettingsController {
 
     private ISettingsService settingsService;

@@ -2,8 +2,6 @@ package com.biblioteca.controllers;
 
 import com.biblioteca.exceptions.BadRequestException;
 import com.biblioteca.exceptions.InvalidParameterException;
-import com.biblioteca.models.CollectionBooks;
-import com.biblioteca.models.UserBooks;
 import com.biblioteca.services.interfaces.IUserBooksService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -23,7 +20,8 @@ public class UserBooksController {
     private IUserBooksService userBooksService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getUserBooks(@PathVariable Integer userId, @RequestParam Integer status ,@RequestParam(required = false) String pattern) {
+    public ResponseEntity<?> getUserBooks(@PathVariable Integer userId, @RequestParam Integer status,
+            @RequestParam(required = false) String pattern) {
         try {
             return ResponseEntity.ok(userBooksService.getBooksByStatus(userId, status, pattern));
         } catch (BadRequestException | InvalidParameterException e) {
@@ -45,7 +43,8 @@ public class UserBooksController {
     }
 
     @PutMapping("/update/{bookId}")
-    public ResponseEntity<?> updateProgress(@PathVariable Integer bookId, @RequestParam Integer userId, @RequestParam Integer pageNum) {
+    public ResponseEntity<?> updateProgress(@PathVariable Integer bookId, @RequestParam Integer userId,
+            @RequestParam Integer pageNum) {
         try {
             return ResponseEntity.ok(userBooksService.updateProgress(userId, bookId, pageNum));
         } catch (BadRequestException | InvalidParameterException e) {
@@ -56,7 +55,8 @@ public class UserBooksController {
     }
 
     @DeleteMapping("/remove/{bookId}")
-    public ResponseEntity<?> removeBook(@PathVariable Integer bookId, @RequestParam Integer userId, @RequestParam Integer type) {
+    public ResponseEntity<?> removeBook(@PathVariable Integer bookId, @RequestParam Integer userId,
+            @RequestParam Integer type) {
         try {
             userBooksService.removeBook(bookId, userId, type);
             return ResponseEntity.ok().build();
@@ -68,9 +68,10 @@ public class UserBooksController {
     }
 
     @PostMapping("/add/{bookId}")
-    public ResponseEntity<?> addBookByStatus(@PathVariable Integer bookId, @RequestParam Integer userId, @RequestParam Integer status) {
+    public ResponseEntity<?> addBookByStatus(@PathVariable Integer bookId, @RequestParam Integer userId,
+            @RequestParam Integer status) {
         try {
-            userBooksService. addBookByStatus(bookId, userId, status);
+            userBooksService.addBookByStatus(bookId, userId, status);
             return ResponseEntity.ok().build();
         } catch (BadRequestException | InvalidParameterException e) {
             Map<String, String> err = new HashMap<>();

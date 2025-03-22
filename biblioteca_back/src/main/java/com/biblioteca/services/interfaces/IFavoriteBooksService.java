@@ -1,8 +1,6 @@
 package com.biblioteca.services.interfaces;
 
-import com.biblioteca.enums.FavoriteStatus;
 import com.biblioteca.models.Book;
-import com.biblioteca.models.FavoriteBooks;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;

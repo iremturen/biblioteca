@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ISettingsRepository {
 
-    List<Settings> getSettingsByType( String infoType);
+    List<Settings> getSettingsByType(String infoType);
 }

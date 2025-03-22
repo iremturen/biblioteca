@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import com.biblioteca.enums.BookStatus;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,7 +19,7 @@ public class UserBooks implements Serializable {
     private Integer id;
     private Integer userId;
     private Integer bookId;
-    private Enum status;
+    private BookStatus status;
     private Date updated_at;
     private Integer progress;
     private Book book;

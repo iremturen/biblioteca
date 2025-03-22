@@ -31,7 +31,8 @@ public class RatingController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> saveRating(@RequestParam Integer bookId, @RequestParam Integer userId, @RequestParam Integer rating) {
+    public ResponseEntity<?> saveRating(@RequestParam Integer bookId, @RequestParam Integer userId,
+            @RequestParam Integer rating) {
         try {
             ratingService.saveRating(bookId, userId, rating);
             return ResponseEntity.ok().build();
@@ -42,5 +43,4 @@ public class RatingController {
         }
     }
 
-    }
-
+}

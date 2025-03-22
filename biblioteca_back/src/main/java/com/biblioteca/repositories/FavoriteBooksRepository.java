@@ -11,37 +11,38 @@ import org.springframework.stereotype.Repository;
 public class FavoriteBooksRepository implements IFavoriteBooksRepository {
     private NamedParameterJdbcTemplate jdbcTemplateNamed;
 
+    private static final int FAVORITE_STATUS_ACTIVE = 1;
+    private static final int FAVORITE_STATUS_INACTIVE = 0;
+
     @Override
     public void remove(Integer userId, Integer bookId) {
-    String sql = "UPDATE FAVORITE_BOOKS SET status = 0 WHERE userId = :userId and bookId = :bookId;";
+        String sql = "UPDATE FAVORITE_BOOKS SET STATUS = " + FAVORITE_STATUS_INACTIVE +
+                " WHERE USERID = :userId AND BOOKID = :bookId";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
-        mapParams.addValue("userId",userId);
-        mapParams.addValue("bookId",bookId);
+        mapParams.addValue("userId", userId);
+        mapParams.addValue("bookId", bookId);
         jdbcTemplateNamed.update(sql, mapParams);
     }
 
     @Override
     public void addBook(Integer userId, Integer bookId) {
-        String sql = "INSERT INTO FAVORITE_BOOKS (userId, bookId, status, addition_at) " +
-                "VALUES (:userId, :bookId, 1, NOW()) " +
-                "ON DUPLICATE KEY UPDATE status = 1, addition_at = NOW();";
+        String sql = "INSERT INTO FAVORITE_BOOKS (USERID, BOOKID, STATUS, ADDITION_AT) " +
+                "VALUES (:userId, :bookId, " + FAVORITE_STATUS_ACTIVE + ", NOW()) " +
+                "ON DUPLICATE KEY UPDATE STATUS = " + FAVORITE_STATUS_ACTIVE + ", ADDITION_AT = NOW()";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
-        mapParams.addValue("userId",userId);
-        mapParams.addValue("bookId",bookId);
+        mapParams.addValue("userId", userId);
+        mapParams.addValue("bookId", bookId);
         jdbcTemplateNamed.update(sql, mapParams);
     }
 
     @Override
     public boolean isFavorite(Integer bookId, Integer userId) {
-        String sql= "SELECT CASE WHEN COUNT(*) = 0 THEN 0 ELSE MAX(status)  END AS status"
-                + " FROM Favorite_Books WHERE bookId = :bookId AND userId = :userId;";
-
+        String sql = "SELECT CASE WHEN COUNT(*) = 0 THEN 0 ELSE MAX(STATUS) END AS STATUS " +
+                "FROM FAVORITE_BOOKS WHERE BOOKID = :bookId AND USERID = :userId";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
-        mapParams.addValue("userId",userId);
-        mapParams.addValue("bookId",bookId);
-
-        int status = jdbcTemplateNamed.queryForObject(sql, mapParams, Integer.class);
-
-         return status == 1;
+        mapParams.addValue("userId", userId);
+        mapParams.addValue("bookId", bookId);
+        Integer status = jdbcTemplateNamed.queryForObject(sql, mapParams, Integer.class);
+        return status != null && status == FAVORITE_STATUS_ACTIVE;
     }
 }

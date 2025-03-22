@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
+import com.biblioteca.enums.FavoriteStatus;
 
 @Getter
 @Setter
@@ -19,6 +20,6 @@ public class FavoriteBooks implements Serializable {
     private Integer id;
     private Integer bookId;
     private Integer userId;
-    private Enum status;
+    private FavoriteStatus status;
     private Date addition_at;
 }

@@ -15,23 +15,20 @@ public class SettingsRepository implements ISettingsRepository {
 
     private NamedParameterJdbcTemplate jdbcTemplateNamed;
 
-
     @Override
     public List<Settings> getSettingsByType(String infoType) {
         String sql = "SELECT s.id, s.info_type, s.title, s.content FROM SETTINGS s WHERE s.info_type = :infoType";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
-        mapParams.addValue("infoType",infoType);
+        mapParams.addValue("infoType", infoType);
         return jdbcTemplateNamed.query(sql, mapParams, rowMapper());
     }
 
-    private RowMapper<Settings> rowMapper(){
+    private RowMapper<Settings> rowMapper() {
         return (rs, rowNum) -> new Settings(
                 rs.getInt("id"),
                 rs.getString("info_type"),
                 rs.getString("title"),
-                rs.getString("content")
-                );
+                rs.getString("content"));
     }
-
 
 }

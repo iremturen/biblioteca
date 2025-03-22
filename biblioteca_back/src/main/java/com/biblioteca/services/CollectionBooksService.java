@@ -29,12 +29,6 @@ public class CollectionBooksService implements ICollectionBooksService {
         return bookRepository.getCollectionsBooks(collectionId, sortBy, pattern);
     }
 
-
-    @Override
-    public List<Book> sortBy(Integer collectionId, String sortBy, String order) {
-        return bookRepository.sortBy(collectionId, sortBy, order);
-    }
-
     @Override
     public void addBooksToCollection(Integer collectionId, List<Long> addedBooks) {
         collectionBooksRepository.addBooksToCollection(collectionId, addedBooks);

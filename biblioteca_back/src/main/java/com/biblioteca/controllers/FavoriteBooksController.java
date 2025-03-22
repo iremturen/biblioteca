@@ -2,10 +2,6 @@ package com.biblioteca.controllers;
 
 import com.biblioteca.exceptions.BadRequestException;
 import com.biblioteca.exceptions.InvalidParameterException;
-import com.biblioteca.models.Book;
-import com.biblioteca.models.FavoriteBooks;
-import com.biblioteca.models.User;
-import com.biblioteca.models.UserBooks;
 import com.biblioteca.services.interfaces.IFavoriteBooksService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor

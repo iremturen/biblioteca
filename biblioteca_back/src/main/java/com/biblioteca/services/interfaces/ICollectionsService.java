@@ -8,8 +8,8 @@ import java.util.List;
 @Validated
 public interface ICollectionsService {
 
-    List<Collections> getCollecitonsByUserId(Integer userId);
-    Collections getCollecitonById(Integer collectionId);
+    List<Collections> getCollectionsByUserId(Integer userId);
+    Collections getCollectionById(Integer collectionId);
     Collections update(Integer collectionId, Collections collections);
     Collections create(Collections collections);
     void delete(Integer collectionId);

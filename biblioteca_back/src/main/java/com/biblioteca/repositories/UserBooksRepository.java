@@ -29,13 +29,14 @@ public class UserBooksRepository implements IUserBooksRepository {
         mapParams.addValue("userId", userId);
         mapParams.addValue("status", statusValue);
 
-        if (Objects.nonNull(pattern)  && !pattern.isEmpty()) {
+        if (Objects.nonNull(pattern) && !pattern.trim().isEmpty()) {
             sql += " AND (b.BOOK_NAME LIKE :pattern OR b.AUTHOR LIKE :pattern)";
             mapParams.addValue("pattern", "%" + pattern + "%");
         }
 
         return jdbcTemplateNamed.query(sql, mapParams, rowMapper());
     }
+
     @Override
     public Integer getCountByStatus(Integer userId, String status) {
         String sql = "SELECT COUNT(*) as COUNT FROM USER_BOOKS ub JOIN BOOK b ON ub.BOOKID = b.BOOKID " +
@@ -43,19 +44,19 @@ public class UserBooksRepository implements IUserBooksRepository {
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("userId", userId);
         mapParams.addValue("status", status);
-        return jdbcTemplateNamed.queryForObject(sql, mapParams, Integer.class);
+        Integer count = jdbcTemplateNamed.queryForObject(sql, mapParams, Integer.class);
+        return count != null ? count : 0;
     }
 
     @Override
     public Integer updateProgress(Integer userId, Integer bookId, Integer pageNum) {
-        String sql="UPDATE USER_BOOKS SET PROGRESS = :pageNum WHERE USERID = :userId AND BOOKID= :bookId;";
+        String sql = "UPDATE USER_BOOKS SET PROGRESS = :pageNum WHERE USERID = :userId AND BOOKID= :bookId;";
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("userId", userId);
         mapParams.addValue("bookId", bookId);
         mapParams.addValue("pageNum", pageNum);
         return jdbcTemplateNamed.update(sql, mapParams);
     }
-
 
     @Override
     public void removeBook(Integer bookId, Integer userId, Integer type) {
@@ -74,31 +75,27 @@ public class UserBooksRepository implements IUserBooksRepository {
     public void addBookByStatus(Integer bookId, Integer userId, Integer status) {
         String statusValue = String.valueOf(getStatusValue(status));
 
-        String check="SELECT COUNT(*) AS COUNT FROM user_books WHERE userId = :userId AND bookId = :bookId AND status=:status";
-        String sql="INSERT INTO user_books (userId, bookId, status, updated_at, progress) VALUES (:userId, :bookId, :status, NOW(),0)";
+        String check = "SELECT COUNT(*) AS COUNT FROM user_books WHERE userId = :userId AND bookId = :bookId AND status=:status";
+        String sql = "INSERT INTO user_books (userId, bookId, status, updated_at, progress) VALUES (:userId, :bookId, :status, NOW(),0)";
 
         MapSqlParameterSource mapParams = new MapSqlParameterSource();
         mapParams.addValue("userId", userId);
         mapParams.addValue("bookId", bookId);
         mapParams.addValue("status", statusValue);
 
-        int count= jdbcTemplateNamed.queryForObject(check, mapParams, Integer.class);
-        if(count==0){
+        Integer count = jdbcTemplateNamed.queryForObject(check, mapParams, Integer.class);
+        if (count != null && count == 0) {
             jdbcTemplateNamed.update(sql, mapParams);
         }
     }
 
     private BookStatus getStatusValue(Integer type) {
-        switch (type) {
-            case 1:
-                return BookStatus.NOW_READING;
-            case 2:
-                return BookStatus.WILL_READ;
-            case 3:
-                return BookStatus.FINISHED;
-            default:
-                throw new IllegalArgumentException("Invalid status type: " + type);
-        }
+        return switch (type) {
+            case 1 -> BookStatus.NOW_READING;
+            case 2 -> BookStatus.WILL_READ;
+            case 3 -> BookStatus.FINISHED;
+            default -> throw new IllegalArgumentException("Invalid status type: " + type);
+        };
     }
 
     private RowMapper<UserBooks> rowMapper() {
@@ -115,8 +112,7 @@ public class UserBooksRepository implements IUserBooksRepository {
                     rs.getString("publishing_year"),
                     rs.getString("language"),
                     rs.getString("image"),
-                    rs.getString("description")
-            );
+                    rs.getString("description"));
 
             return new UserBooks(
                     rs.getInt("id"),
@@ -125,8 +121,7 @@ public class UserBooksRepository implements IUserBooksRepository {
                     BookStatus.valueOf(rs.getString("status")),
                     rs.getDate("updated_at"),
                     rs.getInt("progress"),
-                    book
-            );
+                    book);
         };
     }
 }

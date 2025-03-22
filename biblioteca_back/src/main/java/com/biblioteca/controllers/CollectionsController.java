@@ -2,9 +2,7 @@ package com.biblioteca.controllers;
 
 import com.biblioteca.exceptions.BadRequestException;
 import com.biblioteca.exceptions.InvalidParameterException;
-import com.biblioteca.models.Book;
 import com.biblioteca.models.Collections;
-import com.biblioteca.models.User;
 import com.biblioteca.services.interfaces.ICollectionsService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -24,9 +21,9 @@ public class CollectionsController {
     private ICollectionsService collectionsService;
 
     @GetMapping("/{collectionId}")
-    public ResponseEntity<?> getCollecitonById(@PathVariable Integer collectionId) {
+    public ResponseEntity<?> getCollectionById(@PathVariable Integer collectionId) {
         try {
-            return ResponseEntity.ok(collectionsService.getCollecitonById(collectionId));
+            return ResponseEntity.ok(collectionsService.getCollectionById(collectionId));
         } catch (BadRequestException | InvalidParameterException e) {
             Map<String, String> err = new HashMap<>();
             err.put("message", e.getMessage());
@@ -35,9 +32,9 @@ public class CollectionsController {
     }
 
     @GetMapping("/user_collection/{userId}")
-    public ResponseEntity<?> getCollecitonsByUserId(@PathVariable Integer userId) {
+    public ResponseEntity<?> getCollectionsByUserId(@PathVariable Integer userId) {
         try {
-            return ResponseEntity.ok(collectionsService.getCollecitonsByUserId(userId));
+            return ResponseEntity.ok(collectionsService.getCollectionsByUserId(userId));
         } catch (BadRequestException | InvalidParameterException e) {
             Map<String, String> err = new HashMap<>();
             err.put("message", e.getMessage());
@@ -79,6 +76,5 @@ public class CollectionsController {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
         }
     }
-
 
 }
