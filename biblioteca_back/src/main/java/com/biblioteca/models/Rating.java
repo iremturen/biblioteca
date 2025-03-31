@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.io.Serializable;
+import java.sql.Date;
 
 @Getter
 @Setter
@@ -15,8 +16,9 @@ public class Rating implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer id;
-    private Integer userId;
     private Integer bookId;
-    private Double rate;
-
+    private Integer userId;
+    private Integer rating;
+    private Date createdAt;
+    private Date updatedAt;
 }
