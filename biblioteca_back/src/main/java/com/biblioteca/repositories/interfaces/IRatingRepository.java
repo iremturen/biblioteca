@@ -1,8 +1,14 @@
 package com.biblioteca.repositories.interfaces;
 
-public interface IRatingRepository {
+import com.biblioteca.dto.RatingMessage;
+import com.biblioteca.models.RatingAverage;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-    Double getAverageRating(Integer bookId);
+import java.util.Optional;
 
-    void saveRating(Integer bookId, Integer userId, Integer rating);
+@Repository
+public interface IRatingRepository extends JpaRepository<RatingAverage, Integer> {
+    Optional<RatingAverage> findByBookId(Integer bookId);
+
 }
