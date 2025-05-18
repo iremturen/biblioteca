@@ -16,4 +16,5 @@ public class ReviewMessage  implements Serializable {
     private Integer userId;
     private String review;
     private Date createdAt;
-    private Date updatedAt;}
+    private Date updatedAt;
+}

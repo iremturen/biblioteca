@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReviewProducer {
     private final KafkaTemplate<String, ReviewMessage> kafkaTemplate;
-    private static final Logger logger = LoggerFactory.getLogger(RatingProducer.class);
+    private static final Logger logger = LoggerFactory.getLogger(ReviewProducer.class);
 
     public void sendReviewEvent(ReviewMessage message) {
         kafkaTemplate.send("review-topic", message);
