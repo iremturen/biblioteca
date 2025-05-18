@@ -16,7 +16,7 @@ import java.util.Map;
 @Configuration
 public class KafkaConfig {
     @Bean
-    public KafkaTemplate<String, RatingMessage> kafkaTemplate() {
+    public KafkaTemplate<String, RatingMessage> ratingKafkaTemplate() {
         return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(producerConfigs()));
     }
 

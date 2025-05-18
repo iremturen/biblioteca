@@ -14,7 +14,6 @@ import java.util.Map;
 
 @Service
 public class RatingConsumer {
-
     private static final Logger logger = LoggerFactory.getLogger(RatingConsumer.class);
 
     @Autowired
@@ -48,9 +47,8 @@ public class RatingConsumer {
                 case "GET_AVERAGE":
                     Double average = (Double) result.get("averageRating");
                     Integer bookId = (Integer) result.get("bookId");
-
+                    ratingService.saveAverage(average,bookId);
                     logger.info("Average rating is: {}", average);
-                    ratingService.saveOrUpdate(average,bookId);
                     break;
 
                 default:

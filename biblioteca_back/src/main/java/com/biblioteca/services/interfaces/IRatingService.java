@@ -6,6 +6,6 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 public interface IRatingService {
-    void saveOrUpdate(Double average, Integer bookId);
+    void saveAverage(Double average, Integer bookId);
     RatingAverage getAverageRating(Integer bookId);
 }

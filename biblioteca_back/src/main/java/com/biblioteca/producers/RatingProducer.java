@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Service
 public class RatingProducer {
-    private static final Logger logger = LoggerFactory.getLogger(RatingProducer.class);
+    private static final Logger logger = LoggerFactory.getLogger(ReviewProducer.class);
     private final KafkaTemplate<String, RatingMessage> kafkaTemplate;
 
     public void sendRatingEvent(RatingMessage message) {

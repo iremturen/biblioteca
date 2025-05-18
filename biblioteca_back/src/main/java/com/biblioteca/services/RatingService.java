@@ -17,7 +17,7 @@ public class RatingService implements IRatingService {
     private IRatingRepository ratingRepository;
 
     @Override
-    public void saveOrUpdate(Double average, Integer bookId) {
+    public void saveAverage(Double average, Integer bookId) {
         RatingAverage existingRating = ratingRepository.findByBookId(bookId).orElse(null);
         if (existingRating != null) {
             existingRating.setAverageRating(average);
